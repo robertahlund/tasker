@@ -1,0 +1,35 @@
+.menu-list {
+  color: #fff;
+  display: flex;
+  font-size: 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.menu-list a:not(:first-child) {
+  margin-left: 20px;
+}
+
+.menu-list a {
+  background-color: #4A4A4A;
+  border-radius: 5px;
+  padding: 10px 25px;
+}
+
+.menu-list a.menu-list-item__active {
+  background-color: #fff;
+  color: #4A4A4A;
+  transition: all .3s;
+}
+
+@media screen and (max-width: 768px) {
+  .menu-list-wrapper {
+    display: none;
+  }
+}

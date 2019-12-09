@@ -1,0 +1,41 @@
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 30px;
+  cursor: pointer;
+  height: 30px;
+  justify-content: center;
+}
+
+.mobile-navbar {
+  background-color: var(--white);
+  border-radius: 5px;
+  display: block;
+  height: 2px;
+  transition: transform .3s;
+  width: 100%;
+}
+
+.mobile-navbar__closed:not(:first-child) {
+  margin-top: 7px;
+}
+
+.mobile-navbar__open {
+
+}
+
+.mobile-navbar__open:first-child {
+  margin-bottom: -2px;
+  transform: rotate(45deg);
+}
+
+.mobile-navbar__open:not(:first-child) {
+  transform: rotate(-45deg);
+}
+
+@media screen and (min-width: 768px) {
+  .mobile-nav {
+    display: none;
+  }
+}

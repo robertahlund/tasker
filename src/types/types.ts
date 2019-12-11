@@ -8,3 +8,8 @@ export interface FormFieldValues {
   valid: boolean;
   validationMessage: string;
 }
+
+export interface LoginFormValues {
+  email: FormFieldValues;
+  password: FormFieldValues;
+}

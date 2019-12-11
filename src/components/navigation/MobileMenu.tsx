@@ -53,7 +53,7 @@ const MobileMenu: FC<MobileMenuProps> = () => {
                     </>
                 )}
                 <motion.span custom={4} animate={controls} initial={{opacity: 0}}>
-                    <NavLink to="#">
+                    <NavLink to="/login">
                         <MenuItem text={authenticated ? "Log out" : "Log in"}/>
                     </NavLink>
                 </motion.span>

@@ -30,7 +30,7 @@ const DesktopMenu: FC<DesktopMenuProps> = () => {
                         </NavLink>
                     </>
                 )}
-                <NavLink to="#">
+                <NavLink to="/login">
                     <MenuItem text={authenticated ? "Log out" : "Log in"}/>
                 </NavLink>
             </ul>

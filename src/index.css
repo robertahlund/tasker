@@ -1,27 +1,18 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
+/*4, 5, 7*/
 .App {
   --primary-color: #4A4A4A;
+  --secondary-color: #EDF1F3;
   --white: #fff;
-  --letter-spacing: .8px;
-}
-
-@font-face {
-  font-family: "SF-Pro-Medium";
-  src: url('./fonts/SF-Pro-Display-Medium.otf');
-}
-
-@font-face {
-  font-family: "SF-Pro-Regular";
-  src: url('./fonts/SF-Pro-Display-Medium.otf');
-}
-
-@font-face {
-  font-family: "SF-Pro-Bold";
-  src: url('./fonts/SF-Pro-Display-Bold.otf');
+  --bg-color: #F4F6F7;
+  --bold-font: 700;
+  --medium-font: 500;
+  --regular-font: 400;
 }
 
 body {
   margin: 0;
-  font-family: "SF-Pro-Medium", sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F4F6F7;

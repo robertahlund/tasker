@@ -44,6 +44,6 @@
     font-weight: var(--medium-font);
 }
 
-.login-links-item:first-child {
+.login-links-item:not(:last-child) {
     margin-bottom: 20px;
 }

@@ -7,6 +7,7 @@ import Settings from "../settings/Settings";
 import {Auth} from "../../types/types";
 import {AuthenticationContext} from "../../context/authContext";
 import Login from "../login/Login";
+import Register from "../register/Register";
 
 interface RoutesProps {
 }
@@ -24,6 +25,7 @@ const Routes: FC<RoutesProps> = (props) => {
             <Route exact path="/settings"
                    render={(): ReactNode => authenticated ? <Settings/> : <Redirect to="/login"/>}/>
             <Route exact path="/login" render={(): ReactNode => !authenticated ? <Login/> : <Redirect to="/tasks"/>}/>
+            <Route exact path="/register" render={(): ReactNode => !authenticated ? <Register/> : <Redirect to="/tasks"/>}/>
             <Route render={() => <p>TODO 404</p>}/>
         </Switch>
     );

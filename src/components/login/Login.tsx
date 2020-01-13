@@ -3,6 +3,7 @@ import "./Login.css";
 import InputField from "../generic/InputField";
 import {LoginFormValues} from "../../types/types";
 import Button from "../generic/Button";
+import {Link} from "react-router-dom";
 
 interface LoginProps {
 
@@ -68,8 +69,8 @@ const Login: FC<LoginProps> = (props) => {
                     </div>
                 </form>
                 <div className="login-links">
-                    <a className="login-links-item" href="/forgot-password">Forgot your password?</a>
-                    <a className="login-links-item" href="/register">Register</a>
+                    <Link to="/forgot-password" className="login-links-item">Forgot your password?</Link>
+                    <Link to="/register" className="login-links-item">Register</Link>
                 </div>
             </div>
         </section>

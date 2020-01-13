@@ -3,6 +3,7 @@ import "../login/Login.css";
 import InputField from "../generic/InputField";
 import {LoginFormValues} from "../../types/types";
 import Button from "../generic/Button";
+import {Link} from "react-router-dom";
 
 interface RegisterProps {
 
@@ -68,7 +69,7 @@ const Register: FC<RegisterProps> = (props) => {
                     </div>
                 </form>
                 <div className="login-links">
-                    <a className="login-links-item" href="/login">Back</a>
+                    <Link to="/login" className="login-links-item">Back</Link>
                 </div>
             </div>
         </section>

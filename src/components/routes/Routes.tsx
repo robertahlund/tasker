@@ -1,7 +1,7 @@
 import React, {FC, ReactNode, useContext} from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
 import RepeatedTasks from "../repeated-tasks/RepeatedTasks";
-import Statistics from "../profile/Statistics";
+import Statistics from "../statistics/Statistics";
 import Tasks from "../tasks/Tasks";
 import Settings from "../settings/Settings";
 import {Auth} from "../../types/types";

@@ -5,6 +5,7 @@ import "./MobileMenu.css";
 import {motion, useAnimation} from "framer-motion";
 import {Auth} from "../../types/types";
 import {AuthenticationContext} from "../../context/authContext";
+import {logout} from "../../api/authentication";
 
 interface MobileMenuProps {
 
@@ -53,7 +54,7 @@ const MobileMenu: FC<MobileMenuProps> = () => {
                     </>
                 )}
                 <motion.span custom={4} animate={controls} initial={{opacity: 0}}>
-                    <NavLink to="/login">
+                    <NavLink to="/login" onClick={() => authenticated ? logout() : null}>
                         <MenuItem text={authenticated ? "Log out" : "Log in"}/>
                     </NavLink>
                 </motion.span>

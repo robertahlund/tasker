@@ -4,6 +4,7 @@ import MenuItem from "./MenuItem";
 import "./DesktopMenu.css";
 import {AuthenticationContext} from "../../context/authContext";
 import {Auth} from "../../types/types";
+import {logout} from "../../api/authentication";
 
 interface DesktopMenuProps {
 
@@ -30,7 +31,7 @@ const DesktopMenu: FC<DesktopMenuProps> = () => {
                         </NavLink>
                     </>
                 )}
-                <NavLink to="/login">
+                <NavLink to="/login" onClick={() => authenticated ? logout() : null}>
                     <MenuItem text={authenticated ? "Log out" : "Log in"}/>
                 </NavLink>
             </ul>

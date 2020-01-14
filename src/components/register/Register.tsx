@@ -4,13 +4,14 @@ import InputField from "../generic/InputField";
 import {LoginFormValues} from "../../types/types";
 import Button from "../generic/Button";
 import {Link} from "react-router-dom";
+import {register} from "../../api/authentication";
 
 interface RegisterProps {
 
 }
 
 const Register: FC<RegisterProps> = (props) => {
-    const [RegisterForm, setRegisterForm] = useState<LoginFormValues>({
+    const [registerForm, setRegisterForm] = useState<LoginFormValues>({
         email: {
             valid: true,
             validationMessage: "",
@@ -25,7 +26,7 @@ const Register: FC<RegisterProps> = (props) => {
 
     const handleFormChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setRegisterForm({
-            ...RegisterForm,
+            ...registerForm,
             [event.target.name]: {
                 value: event.target.value,
                 valid: true,
@@ -34,9 +35,15 @@ const Register: FC<RegisterProps> = (props) => {
         })
     };
 
-    const handleRegister = (event: SyntheticEvent): void => {
+    const handleRegister = async (event: SyntheticEvent): Promise<void> => {
         event.preventDefault();
-        console.log("submit");
+        const email: string = registerForm.email.value;
+        const password: string = registerForm.password.value;
+        try {
+            await register(email, password)
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -47,22 +54,22 @@ const Register: FC<RegisterProps> = (props) => {
                     <InputField
                         id="email"
                         labelValue="Email"
-                        value={RegisterForm.email.value}
+                        value={registerForm.email.value}
                         type="text"
                         onInputChange={handleFormChange}
                         name="email"
-                        valid={RegisterForm.email.valid}
-                        validationMessage={RegisterForm.email.validationMessage}
+                        valid={registerForm.email.valid}
+                        validationMessage={registerForm.email.validationMessage}
                     />
                     <InputField
                         id="password"
                         labelValue="Password"
-                        value={RegisterForm.password.value}
+                        value={registerForm.password.value}
                         type="password"
                         onInputChange={handleFormChange}
                         name="password"
-                        valid={RegisterForm.password.valid}
-                        validationMessage={RegisterForm.password.validationMessage}
+                        valid={registerForm.password.valid}
+                        validationMessage={registerForm.password.validationMessage}
                     />
                     <div className="login-form-button-row">
                         <Button type="submit" text="Register" onSubmit={handleRegister}/>

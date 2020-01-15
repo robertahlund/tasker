@@ -8,6 +8,7 @@
   --bold-font: 700;
   --medium-font: 500;
   --regular-font: 400;
+  --screen-padding: 40px;
 }
 
 body {
@@ -16,4 +17,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F4F6F7;
+}
+
+.main-section {
+  padding: var(--screen-padding);
 }

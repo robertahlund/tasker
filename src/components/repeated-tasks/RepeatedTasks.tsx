@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import './RepatedTasks.css';
+import SectionTitle from "../generic/SectionTitle";
 
 interface UploadProps {
 
@@ -7,9 +8,9 @@ interface UploadProps {
 
 const RepeatedTasks: FC<UploadProps> = (props) => {
   return (
-    <section className="">
-      <p>Repeated tasks</p>
-    </section>
+    <main className="main-section repeated-tasks">
+      <SectionTitle title="Repeated Tasks"/>
+    </main>
   );
 };
 

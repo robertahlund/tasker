@@ -1,0 +1,23 @@
+.main-section .input-field-wrapper {
+  width: 300px;
+  margin-top: 50px;
+}
+
+.main-section .input-field {
+  background-color: var(--white);
+}
+
+.repeated-tasks-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.repeated-tasks-table {
+  width: 40%;
+}
+
+.repeated-tasks-edit {
+  width: 30%;
+}

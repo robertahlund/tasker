@@ -1,0 +1,10 @@
+.repeated-tasks-edit-wrapper {
+  background-color: var(--white);
+  padding: 30px 30px;
+  border-radius: 5px;
+}
+
+.repeated-tasks-edit-heading {
+  color: var(--primary-color);
+  margin: 0;
+}

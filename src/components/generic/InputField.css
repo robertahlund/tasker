@@ -1,6 +1,7 @@
 .input-field-wrapper {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .input-field-wrapper:first-child {
@@ -24,4 +25,10 @@
 
 .input-field[type="password"] {
     font-family: sans-serif;
+}
+
+.input-field-wrapper .icon-path {
+    position: absolute;
+    right: 5px;
+    top: calc((39px - 24px) / 2);
 }

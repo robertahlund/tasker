@@ -1,2 +1,2 @@
-export const repeatableTasksPath: string = "repeatable_tasks";
-export const tasks: string = "tasks";
+export const repeatedTasksPath: string = "repeated_tasks";
+export const tasksPath: string = "tasks";

@@ -1,0 +1,15 @@
+.repeated-task-schedule-item {
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: var(--primary-color);
+  font-weight: var(--medium-font);
+  background-color: var(--white);
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color .3s;
+  display: inline-table;
+}
+
+.repeated-task-schedule-item__active {
+  background-color: var(--secondary-color);
+}

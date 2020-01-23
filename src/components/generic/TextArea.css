@@ -1,0 +1,26 @@
+.textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.textarea-wrapper:first-child {
+  margin-bottom: 20px;
+}
+
+.textarea-label {
+  margin-bottom: 5px;
+  font-weight: var(--medium-font);
+  color: var(--primary-color);
+}
+
+.textarea {
+  background-color: var(--secondary-color);
+  border: none;
+  border-radius: 5px;
+  font-weight: var(--regular-font);
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  padding: 10px;
+  resize: none;
+}

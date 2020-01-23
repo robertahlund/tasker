@@ -1,0 +1,16 @@
+.repeated-task-schedule-container {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.repeated-task-schedule-label {
+  margin-bottom: 5px;
+  font-weight: var(--medium-font);
+  color: var(--primary-color);
+}
+
+.repeated-task-schedule-custom-container {
+  display: flex;
+  margin-top: 10px;
+}

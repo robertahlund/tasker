@@ -1,4 +1,4 @@
-import {RepetableTaskType} from "../enums/enums";
+import {RepeatedTaskType} from "../enums/enums";
 
 export interface Auth {
   uid: string;
@@ -16,17 +16,20 @@ export interface LoginFormValues {
   password: FormFieldValues;
 }
 
-export interface RepeatableTaskFormValues {
+export interface RepeatedTaskFormValues {
+  id: string;
   content: FormFieldValues;
-  schedule: RepetableTaskType;
-  scheduleDays: number[]
+  schedule: RepeatedTaskType;
+  scheduleDays: number[];
 }
 
-export interface RepeatableTask {
+export interface RepeatedTask {
   id: string;
   content: string;
-  schedule: RepetableTaskType;
-  scheduleDays: number[]
+  schedule: RepeatedTaskType;
+  scheduleDays: number[];
+  createdAtFormatted: string;
+  createdAt: Date;
 }
 
 export interface IconProps {
@@ -34,3 +37,5 @@ export interface IconProps {
   width: string;
   onClickFunction?: () => void;
 }
+
+export type WeekDayAbbreviation = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";

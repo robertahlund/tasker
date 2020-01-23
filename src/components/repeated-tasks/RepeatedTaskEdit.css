@@ -8,3 +8,8 @@
   color: var(--primary-color);
   margin: 0;
 }
+
+.repeated-tasks-edit-form {
+  width: 60%;
+  margin-top: 50px;
+}

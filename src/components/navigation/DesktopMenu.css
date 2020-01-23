@@ -16,6 +16,10 @@
   margin-left: 20px;
 }
 
+.menu-list a:last-child {
+  padding-right: 0;
+}
+
 .menu-list a {
   background-color: #4A4A4A;
   border-radius: 5px;
@@ -31,5 +35,8 @@
 @media screen and (max-width: 768px) {
   .menu-list-wrapper {
     display: none;
+  }
+  .menu-list a:last-child {
+    padding-right: 25px;
   }
 }

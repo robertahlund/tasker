@@ -1,18 +1,15 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import "./RepeatedTasksTable.css";
 import SubMenuIcon from "../icons/SubMenuIcon";
 import RepeatedTaskEditMenu from "./RepeatedTaskEditMenu";
 
 interface RepeatedTasksTableProps {
-
+  selectedRepeatableTaskId: string;
+  toggleEditMenu: (taskId: string) => void;
+  selectRepeatedTaskIdForEdit: (taskId: string) => void;
 }
 
-const RepeatedTasksTable: FC<RepeatedTasksTableProps> = (props) => {
-  const [selectedRepeatableTaskId, setSelectedRepeatableTaskId] = useState<string>("");
-
-  const toggleEditMenu = (taskId: string): void => {
-    setSelectedRepeatableTaskId(taskId);
-  };
+const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({selectedRepeatableTaskId, toggleEditMenu, selectRepeatedTaskIdForEdit}) => {
 
   return (
     <div className="repeated-tasks-table-wrapper">
@@ -34,7 +31,7 @@ const RepeatedTasksTable: FC<RepeatedTasksTableProps> = (props) => {
         <span>Every day</span>
         <span>27 Aug, 2020</span>
         <span><SubMenuIcon height="24px" width="24px"/></span>
-        <RepeatedTaskEditMenu/>
+        <RepeatedTaskEditMenu selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}/>
       </div>
       <div className="repeated-tasks-table-row">
         <span>Lorem Ipsum etc.</span>

@@ -11,6 +11,7 @@
 .input-field-label {
     margin-bottom: 5px;
     font-weight: var(--medium-font);
+    color: var(--primary-color);
 }
 
 .input-field {

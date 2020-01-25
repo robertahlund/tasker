@@ -25,6 +25,7 @@ export interface RepeatedTaskFormValues {
 
 export interface RepeatedTask {
   id: string;
+  uid: string;
   content: string;
   schedule: RepeatedTaskType;
   scheduleDays: number[];

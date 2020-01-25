@@ -9,8 +9,11 @@ interface RepeatedTasksTableProps {
   selectRepeatedTaskIdForEdit: (taskId: string) => void;
 }
 
-const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({selectedRepeatableTaskId, toggleEditMenu, selectRepeatedTaskIdForEdit}) => {
-
+const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({
+                                                           selectedRepeatableTaskId,
+                                                           toggleEditMenu,
+                                                           selectRepeatedTaskIdForEdit
+                                                         }) => {
   return (
     <div className="repeated-tasks-table-wrapper">
       <div className="repeated-tasks-table-header">
@@ -23,27 +26,36 @@ const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({selectedRepeatableTask
         <span>Lorem Ipsum etc.</span>
         <span>Every day</span>
         <span>27 Aug, 2020</span>
-        <span><SubMenuIcon height="24px" width="24px"/></span>
-
+        <span>
+          <SubMenuIcon height="24px" width="24px"/>
+        </span>
       </div>
       <div className="repeated-tasks-table-row">
         <span>Lorem Ipsum etc.</span>
         <span>Every day</span>
         <span>27 Aug, 2020</span>
-        <span><SubMenuIcon height="24px" width="24px"/></span>
-        <RepeatedTaskEditMenu selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}/>
+        <span>
+          <SubMenuIcon height="24px" width="24px"/>
+        </span>
+        <RepeatedTaskEditMenu
+          selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
+        />
       </div>
       <div className="repeated-tasks-table-row">
         <span>Lorem Ipsum etc.</span>
         <span>Every day</span>
         <span>27 Aug, 2020</span>
-        <span><SubMenuIcon height="24px" width="24px"/></span>
+        <span>
+          <SubMenuIcon height="24px" width="24px"/>
+        </span>
       </div>
       <div className="repeated-tasks-table-row">
         <span>Lorem Ipsum etc.</span>
         <span>Every day</span>
         <span>27 Aug, 2020</span>
-        <span><SubMenuIcon height="24px" width="24px"/></span>
+        <span>
+          <SubMenuIcon height="24px" width="24px"/>
+        </span>
       </div>
     </div>
   );

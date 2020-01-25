@@ -3,8 +3,8 @@ import { RepeatedTaskType, WeekDays } from "../../enums/enums";
 import "./RepeatedTaskSchedule.css";
 import RepeatedTaskScheduleItem from "./RepeatedTaskScheduleItem";
 import CustomSchedule from "./CustomSchedule";
-import { WeekDayAbbreviation } from "../../types/types";
-import { AnimatePresence, motion } from "framer-motion";
+import {WeekDayAbbreviation} from "../../types/types";
+import {AnimatePresence} from "framer-motion";
 
 interface RepeatedTaskScheduleProps {
   selectedTaskSchedule: RepeatedTaskType;

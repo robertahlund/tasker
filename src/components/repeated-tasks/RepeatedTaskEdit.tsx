@@ -1,20 +1,27 @@
-import React, { ChangeEvent, FC, SyntheticEvent, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  SyntheticEvent, useContext,
+  useEffect,
+  useState
+} from "react";
 import "./RepeatedTaskEdit.css";
 import TextArea from "../generic/TextArea";
 import Button from "../generic/Button";
-import { RepeatedTaskFormValues } from "../../types/types";
-import { RepeatedTaskType } from "../../enums/enums";
+import {Auth, RepeatedTaskFormValues} from "../../types/types";
+import {RepeatedTaskType} from "../../enums/enums";
 import RepeatedTaskSchedule from "./RepeatedTaskSchedule";
 import {createOrUpdateRepeatedTask} from "../../api/repeatableTasks";
+import format from "date-fns/format";
+import {repeatedTaskDateFormat} from "../../constants/constants";
+import {AuthenticationContext} from "../../context/authContext";
 
 interface RepeatableTaskEditProps {
   repeatedTaskId: string;
 }
 
-const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({ repeatedTaskId }) => {
-  const [repeatedTaskForm, setRepeatedTaskForm] = useState<
-    RepeatedTaskFormValues
-  >({
+const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({repeatedTaskId}) => {
+  const [repeatedTaskForm, setRepeatedTaskForm] = useState<RepeatedTaskFormValues>({
     id: repeatedTaskId,
     content: {
       value: "",
@@ -24,6 +31,13 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({ repeatedTaskId }) => {
     schedule: RepeatedTaskType.EveryDay,
     scheduleDays: [1, 2, 3, 4, 5, 6, 7]
   });
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+
+  const {uid}: { uid: string } = useContext<Auth>(AuthenticationContext);
+
+  useEffect(() => {
+    //TODO fetch by id
+  }, [repeatedTaskId]);
 
   const handleTextAreaChange = (
     event: ChangeEvent<HTMLTextAreaElement>
@@ -57,14 +71,32 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({ repeatedTaskId }) => {
 
   const createRepeatedTask = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
-    await createOrUpdateRepeatedTask({
-      id: repeatedTaskId,
-      content: repeatedTaskForm.content.value,
-      createdAt: new Date(),
-      createdAtFormatted: "23 Jan, 2020",
-      schedule: repeatedTaskForm.schedule,
-      scheduleDays: repeatedTaskForm.scheduleDays
-    })
+    try {
+      setSubmitLoading(true);
+      await createOrUpdateRepeatedTask({
+        id: repeatedTaskId,
+        uid: uid,
+        content: repeatedTaskForm.content.value,
+        createdAt: new Date(),
+        createdAtFormatted: format(new Date(), repeatedTaskDateFormat),
+        schedule: repeatedTaskForm.schedule,
+        scheduleDays: repeatedTaskForm.scheduleDays
+      });
+      setRepeatedTaskForm({
+        id: "",
+        content: {
+          value: "",
+          valid: true,
+          validationMessage: ""
+        },
+        schedule: RepeatedTaskType.EveryDay,
+        scheduleDays: [1, 2, 3, 4, 5, 6, 7]
+      });
+      setSubmitLoading(false);
+    } catch (error) {
+      console.log(error);
+      setSubmitLoading(false);
+    }
   };
 
   return (
@@ -89,7 +121,8 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({ repeatedTaskId }) => {
           selectedScheduleDays={repeatedTaskForm.scheduleDays}
           handleCustomScheduleDaysChange={handleCustomScheduleDaysChange}
         />
-        <Button type="button" text="Save" onSubmit={createRepeatedTask} />
+        <Button type="button" text="Save" onSubmit={createRepeatedTask} loading={submitLoading}
+                disabled={submitLoading}/>
       </form>
     </div>
   );

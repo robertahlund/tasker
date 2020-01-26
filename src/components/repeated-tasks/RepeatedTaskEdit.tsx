@@ -1,27 +1,39 @@
 import React, {
   ChangeEvent,
   FC,
-  SyntheticEvent, useContext,
+  SyntheticEvent,
+  useContext,
   useEffect,
   useState
 } from "react";
 import "./RepeatedTaskEdit.css";
 import TextArea from "../generic/TextArea";
 import Button from "../generic/Button";
-import {Auth, RepeatedTaskFormValues} from "../../types/types";
-import {RepeatedTaskType} from "../../enums/enums";
+import { Auth, RepeatedTask, RepeatedTaskFormValues } from "../../types/types";
+import { RepeatedTaskType } from "../../enums/enums";
 import RepeatedTaskSchedule from "./RepeatedTaskSchedule";
-import {createOrUpdateRepeatedTask} from "../../api/repeatableTasks";
+import {
+  createOrUpdateRepeatedTask,
+  getRepeatedTaskById
+} from "../../api/repeatedTasks";
 import format from "date-fns/format";
-import {repeatedTaskDateFormat} from "../../constants/constants";
-import {AuthenticationContext} from "../../context/authContext";
+import { repeatedTaskDateFormat } from "../../constants/constants";
+import { AuthenticationContext } from "../../context/authContext";
 
 interface RepeatableTaskEditProps {
   repeatedTaskId: string;
+  selectRepeatedTaskIdForEdit: (taskId: string) => void;
+  getRepeatedTasks: () => Promise<void>;
 }
 
-const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({repeatedTaskId}) => {
-  const [repeatedTaskForm, setRepeatedTaskForm] = useState<RepeatedTaskFormValues>({
+const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
+  repeatedTaskId,
+  selectRepeatedTaskIdForEdit,
+  getRepeatedTasks
+}) => {
+  const [repeatedTaskForm, setRepeatedTaskForm] = useState<
+    RepeatedTaskFormValues
+  >({
     id: repeatedTaskId,
     content: {
       value: "",
@@ -33,10 +45,27 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({repeatedTaskId}) => {
   });
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
-  const {uid}: { uid: string } = useContext<Auth>(AuthenticationContext);
+  const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
   useEffect(() => {
-    //TODO fetch by id
+    if (repeatedTaskId) {
+      const getRepeatedTask = async (): Promise<void> => {
+        const repeatedTask: RepeatedTask = await getRepeatedTaskById(
+          repeatedTaskId
+        );
+        setRepeatedTaskForm({
+          id: repeatedTask.id,
+          content: {
+            value: repeatedTask.content,
+            valid: true,
+            validationMessage: ""
+          },
+          schedule: repeatedTask.schedule,
+          scheduleDays: repeatedTask.scheduleDays
+        });
+      };
+      getRepeatedTask();
+    }
   }, [repeatedTaskId]);
 
   const handleTextAreaChange = (
@@ -92,7 +121,9 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({repeatedTaskId}) => {
         schedule: RepeatedTaskType.EveryDay,
         scheduleDays: [1, 2, 3, 4, 5, 6, 7]
       });
+      await getRepeatedTasks();
       setSubmitLoading(false);
+      selectRepeatedTaskIdForEdit("");
     } catch (error) {
       console.log(error);
       setSubmitLoading(false);
@@ -121,8 +152,13 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({repeatedTaskId}) => {
           selectedScheduleDays={repeatedTaskForm.scheduleDays}
           handleCustomScheduleDaysChange={handleCustomScheduleDaysChange}
         />
-        <Button type="button" text="Save" onSubmit={createRepeatedTask} loading={submitLoading}
-                disabled={submitLoading}/>
+        <Button
+          type="button"
+          text="Save"
+          onSubmit={createRepeatedTask}
+          loading={submitLoading}
+          disabled={submitLoading}
+        />
       </form>
     </div>
   );

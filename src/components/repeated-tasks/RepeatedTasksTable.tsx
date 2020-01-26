@@ -1,62 +1,37 @@
-import React, {FC} from "react";
+import React, { FC } from "react";
 import "./RepeatedTasksTable.css";
-import SubMenuIcon from "../icons/SubMenuIcon";
-import RepeatedTaskEditMenu from "./RepeatedTaskEditMenu";
+import { RepeatedTask } from "../../types/types";
+import RepeatedTaskTableHeader from "./RepeatedTaskTableHeader";
+import RepeatedTaskTableRow from "./RepeatedTaskTableRow";
 
 interface RepeatedTasksTableProps {
-  selectedRepeatableTaskId: string;
+  selectedRepeatedTaskId: string;
   toggleEditMenu: (taskId: string) => void;
   selectRepeatedTaskIdForEdit: (taskId: string) => void;
+  repeatedTasks: RepeatedTask[];
+  removeRepeatedTask: () => Promise<void>;
 }
 
 const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({
-                                                           selectedRepeatableTaskId,
-                                                           toggleEditMenu,
-                                                           selectRepeatedTaskIdForEdit
-                                                         }) => {
+  selectedRepeatedTaskId,
+  toggleEditMenu,
+  selectRepeatedTaskIdForEdit,
+  repeatedTasks,
+  removeRepeatedTask
+}) => {
   return (
     <div className="repeated-tasks-table-wrapper">
-      <div className="repeated-tasks-table-header">
-        <span>Content</span>
-        <span>Schedule</span>
-        <span>Created</span>
-        <span></span>
-      </div>
-      <div className="repeated-tasks-table-row">
-        <span>Lorem Ipsum etc.</span>
-        <span>Every day</span>
-        <span>27 Aug, 2020</span>
-        <span>
-          <SubMenuIcon height="24px" width="24px"/>
-        </span>
-      </div>
-      <div className="repeated-tasks-table-row">
-        <span>Lorem Ipsum etc.</span>
-        <span>Every day</span>
-        <span>27 Aug, 2020</span>
-        <span>
-          <SubMenuIcon height="24px" width="24px"/>
-        </span>
-        <RepeatedTaskEditMenu
+      <RepeatedTaskTableHeader />
+      {repeatedTasks.map((repeatedTask: RepeatedTask) => (
+        <RepeatedTaskTableRow
+          key={repeatedTask.id}
+          selectedRepeatableTaskId={selectedRepeatedTaskId}
+          toggleEditMenu={toggleEditMenu}
           selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
+          repeatedTask={repeatedTask}
+          removeRepeatedTask={removeRepeatedTask}
         />
-      </div>
-      <div className="repeated-tasks-table-row">
-        <span>Lorem Ipsum etc.</span>
-        <span>Every day</span>
-        <span>27 Aug, 2020</span>
-        <span>
-          <SubMenuIcon height="24px" width="24px"/>
-        </span>
-      </div>
-      <div className="repeated-tasks-table-row">
-        <span>Lorem Ipsum etc.</span>
-        <span>Every day</span>
-        <span>27 Aug, 2020</span>
-        <span>
-          <SubMenuIcon height="24px" width="24px"/>
-        </span>
-      </div>
+      ))}
     </div>
   );
 };

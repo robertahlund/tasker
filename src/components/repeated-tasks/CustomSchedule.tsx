@@ -1,8 +1,8 @@
-import React, {FC} from "react";
+import React, { FC } from "react";
 import "./CustomSchedule.css";
-import {WeekDays} from "../../enums/enums";
-import {WeekDayAbbreviation} from "../../types/types";
-import {motion} from "framer-motion";
+import { WeekDays } from "../../enums/enums";
+import { WeekDayAbbreviation } from "../../types/types";
+import { motion } from "framer-motion";
 
 interface CustomScheduleProps {
   weekDayId: WeekDays;
@@ -37,10 +37,10 @@ const CustomSchedule: FC<CustomScheduleProps> = ({
         active ? "repeated-task-schedule-custom-item__active" : ""
       }`}
       onClick={customScheduleChange}
-      animate={{opacity: 1}}
-      initial={{opacity: 0}}
-      exit={{opacity: 0}}
-      transition={{duration: 0.3}}
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
     >
       {weekDay}
     </motion.span>

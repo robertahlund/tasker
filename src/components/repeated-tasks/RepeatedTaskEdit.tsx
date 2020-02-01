@@ -44,6 +44,9 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
     scheduleDays: [1, 2, 3, 4, 5, 6, 7]
   });
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [repeatedTaskCreatedDate, setRepeatedTaskCreatedDate] = useState<Date>(
+    new Date()
+  );
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
@@ -63,6 +66,7 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
           schedule: repeatedTask.schedule,
           scheduleDays: repeatedTask.scheduleDays
         });
+        setRepeatedTaskCreatedDate(repeatedTask.createdAt);
       };
       getRepeatedTask();
     }
@@ -106,8 +110,11 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
         id: repeatedTaskId,
         uid: uid,
         content: repeatedTaskForm.content.value,
-        createdAt: new Date(),
-        createdAtFormatted: format(new Date(), repeatedTaskDateFormat),
+        createdAt: repeatedTaskCreatedDate,
+        createdAtFormatted: format(
+          repeatedTaskCreatedDate,
+          repeatedTaskDateFormat
+        ),
         schedule: repeatedTaskForm.schedule,
         scheduleDays: repeatedTaskForm.scheduleDays
       });
@@ -124,6 +131,7 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
       await getRepeatedTasks();
       setSubmitLoading(false);
       selectRepeatedTaskIdForEdit("");
+      setRepeatedTaskCreatedDate(new Date());
     } catch (error) {
       console.log(error);
       setSubmitLoading(false);

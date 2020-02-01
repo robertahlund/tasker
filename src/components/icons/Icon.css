@@ -1,3 +1,7 @@
 .icon-path {
   fill: var(--primary-color);
 }
+
+.button .icon-path {
+  fill: var(--white);
+}

@@ -3,6 +3,7 @@ import "./RepeatedTasksTable.css";
 import { RepeatedTask } from "../../types/types";
 import RepeatedTaskTableHeader from "./RepeatedTaskTableHeader";
 import RepeatedTaskTableRow from "./RepeatedTaskTableRow";
+import LoadingIcon from "../icons/LoadingIcon";
 
 interface RepeatedTasksTableProps {
   selectedRepeatedTaskId: string;
@@ -10,6 +11,7 @@ interface RepeatedTasksTableProps {
   selectRepeatedTaskIdForEdit: (taskId: string) => void;
   repeatedTasks: RepeatedTask[];
   removeRepeatedTask: () => Promise<void>;
+  repeatedTasksLoading: boolean;
 }
 
 const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({
@@ -17,21 +19,32 @@ const RepeatedTasksTable: FC<RepeatedTasksTableProps> = ({
   toggleEditMenu,
   selectRepeatedTaskIdForEdit,
   repeatedTasks,
-  removeRepeatedTask
+  removeRepeatedTask,
+  repeatedTasksLoading
 }) => {
   return (
     <div className="repeated-tasks-table-wrapper">
       <RepeatedTaskTableHeader />
-      {repeatedTasks.map((repeatedTask: RepeatedTask) => (
-        <RepeatedTaskTableRow
-          key={repeatedTask.id}
-          selectedRepeatableTaskId={selectedRepeatedTaskId}
-          toggleEditMenu={toggleEditMenu}
-          selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
-          repeatedTask={repeatedTask}
-          removeRepeatedTask={removeRepeatedTask}
-        />
-      ))}
+      {repeatedTasksLoading ? (
+        <div className="repeated-tasks-table-loading-wrapper">
+          <LoadingIcon height="48px" width="48px" />
+        </div>
+      ) : (
+        repeatedTasks.length > 0 ? (
+          repeatedTasks.map((repeatedTask: RepeatedTask) => (
+            <RepeatedTaskTableRow
+              key={repeatedTask.id}
+              selectedRepeatableTaskId={selectedRepeatedTaskId}
+              toggleEditMenu={toggleEditMenu}
+              selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
+              repeatedTask={repeatedTask}
+              removeRepeatedTask={removeRepeatedTask}
+            />
+          ))
+        ) : (
+          <div className="repeated-tasks-table-empty-wrapper">No results found.</div>
+        )
+      )}
     </div>
   );
 };

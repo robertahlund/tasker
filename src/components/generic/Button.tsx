@@ -1,5 +1,6 @@
-import React, {FC, SyntheticEvent} from "react";
+import React, { FC, SyntheticEvent } from "react";
 import "./Button.css";
+import LoadingIcon from "../icons/LoadingIcon";
 
 interface ButtonProps {
   type: "button" | "submit";
@@ -12,12 +13,12 @@ interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({
-                                   type,
-                                   text,
-                                   onSubmit,
-                                   loading,
-                                   disabled
-                                 }) => (
+  type,
+  text,
+  onSubmit,
+  loading,
+  disabled
+}) => (
   <button
     type={type}
     onClick={onSubmit}
@@ -25,7 +26,7 @@ const Button: FC<ButtonProps> = ({
     className="button"
     disabled={disabled}
   >
-    {text}
+    {loading ? <LoadingIcon height="16px" width="16px" /> : text }
   </button>
 );
 

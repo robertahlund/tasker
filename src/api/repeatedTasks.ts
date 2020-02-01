@@ -52,7 +52,15 @@ export const getRepeatedTaskById = async (
       .get()
       .then(document => {
         if (document.exists) {
-          return document.data() as RepeatedTask;
+          return {
+            id: document.data()!.id,
+            uid: document.data()!.uid,
+            content: document.data()!.content,
+            schedule: document.data()!.schedule,
+            scheduleDays: document.data()!.scheduleDays,
+            createdAtFormatted: document.data()!.createdAtFormatted,
+            createdAt: document.data()!.createdAt.toDate()
+          };
         } else {
           return Promise.reject("No repeated task with that id exists.");
         }

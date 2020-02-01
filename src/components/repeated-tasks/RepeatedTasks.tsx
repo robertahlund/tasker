@@ -30,7 +30,12 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
     string
   >("");
   const [repeatedTasks, setRepeatedTasks] = useState<RepeatedTask[]>([]);
-
+  const [originalRepeatedTasks, setOriginalRepeatedTasks] = useState<
+    RepeatedTask[]
+  >([]);
+  const [repeatedTasksLoading, setRepeatedTasksLoading] = useState<boolean>(
+    false
+  );
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
   useEffect(() => {
@@ -42,7 +47,18 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
   }, []);
 
   const getRepeatedTasks = async (): Promise<void> => {
-    setRepeatedTasks(await getAllRepeatedTasksByUserId(uid));
+    setRepeatedTasksLoading(true);
+    const repeatedTasks: RepeatedTask[] = await getAllRepeatedTasksByUserId(
+      uid
+    );
+    setRepeatedTasks(
+      [...repeatedTasks].filter(
+        (repeatedTask: RepeatedTask) =>
+          repeatedTask.content.indexOf(searchValue) > -1
+      )
+    );
+    setOriginalRepeatedTasks(repeatedTasks);
+    setRepeatedTasksLoading(false);
   };
 
   const toggleEditMenu = (taskId: string): void => {
@@ -59,7 +75,14 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSearchValue(event.target.value);
+    const { value } = event.target;
+    setSearchValue(value);
+    setRepeatedTasks(
+      [...originalRepeatedTasks].filter(
+        (repeatedTask: RepeatedTask) =>
+          repeatedTask.content.indexOf(event.target.value) > -1
+      )
+    );
   };
 
   const removeRepeatedTask = async (): Promise<void> => {
@@ -67,6 +90,12 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
       await deleteRepeatedTask(selectedRepeatedTaskId);
       setRepeatedTasks(
         [...repeatedTasks].filter(
+          (repeatedTask: RepeatedTask) =>
+            repeatedTask.id !== selectedRepeatedTaskId
+        )
+      );
+      setOriginalRepeatedTasks(
+        [...originalRepeatedTasks].filter(
           (repeatedTask: RepeatedTask) =>
             repeatedTask.id !== selectedRepeatedTaskId
         )
@@ -99,6 +128,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
             selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
             repeatedTasks={repeatedTasks}
             removeRepeatedTask={removeRepeatedTask}
+            repeatedTasksLoading={repeatedTasksLoading}
           />
         </section>
         <section className="repeated-tasks-edit">

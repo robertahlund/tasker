@@ -1,23 +1,30 @@
 .main-section .input-field-wrapper {
   width: 300px;
-  margin-top: 50px;
-}
-
-.main-section .input-field {
-  background-color: var(--white);
 }
 
 .repeated-tasks-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .repeated-tasks-table {
-  width: 40%;
+  width: 60%;
 }
 
 .repeated-tasks-edit {
   width: 30%;
+}
+
+.repeated-tasks-search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 60%;
+  margin-top: 50px;
+}
+
+.repeated-tasks-search-container .input-field-wrapper:first-child {
+  margin-bottom: 0;
 }

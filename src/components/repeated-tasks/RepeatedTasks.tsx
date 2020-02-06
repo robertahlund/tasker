@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   FC,
+  SyntheticEvent,
   useCallback,
   useContext,
   useEffect,
@@ -18,6 +19,9 @@ import {
 } from "../../api/repeatedTasks";
 import { Auth, RepeatedTask } from "../../types/types";
 import { AuthenticationContext } from "../../context/authContext";
+import Button from "../generic/Button";
+import ModalPortal from "../generic/ModalPortal";
+import { AnimatePresence } from "framer-motion";
 
 interface RepeatedTasksProps {}
 
@@ -36,6 +40,8 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
   const [repeatedTasksLoading, setRepeatedTasksLoading] = useState<boolean>(
     false
   );
+  const [displayModal, setDisplayModal] = useState<boolean>(false);
+
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
   useEffect(() => {
@@ -43,6 +49,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
   }, []);
 
   useEffect(() => {
+    console.log("getting tasks ofc");
     getRepeatedTasks();
   }, []);
 
@@ -72,6 +79,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
   const selectRepeatedTaskIdForEdit = (taskId: string): void => {
     setSelectedRepeatedTaskIdEdit(taskId);
     setSelectedRepeatedTaskId("");
+    toggleModal(undefined, false, true);
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -107,19 +115,51 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
     }
   };
 
+  const toggleModal = (
+    event?: SyntheticEvent,
+    shouldClose?: boolean,
+    shouldOpen?: boolean
+  ): void => {
+    if (shouldClose) {
+      setSelectedRepeatedTaskId("");
+      setSelectedRepeatedTaskIdEdit("");
+      setDisplayModal(false);
+    }
+    if (shouldOpen) {
+      setDisplayModal(true);
+    }
+    if (event) {
+      const { target, currentTarget } = event;
+      if (target === currentTarget) {
+        if (displayModal) {
+          setSelectedRepeatedTaskId("");
+          setSelectedRepeatedTaskIdEdit("");
+        }
+        setDisplayModal(!displayModal);
+      }
+    }
+  };
+
   return (
     <main className="main-section repeated-tasks">
       <SectionTitle title="Repeated Tasks" />
-      <InputField
-        id="search"
-        value={searchValue}
-        type="text"
-        onInputChange={handleSearchChange}
-        name="search"
-        valid={true}
-        validationMessage=""
-        icon={<SearchIcon height="24px" width="24px" />}
-      />
+      <div className="repeated-tasks-search-container">
+        <InputField
+          id="search"
+          value={searchValue}
+          type="text"
+          onInputChange={handleSearchChange}
+          name="search"
+          valid={true}
+          validationMessage=""
+          icon={<SearchIcon height="18px" width="18px" />}
+        />
+        <Button
+          type="button"
+          text="Create"
+          onSubmit={(event: SyntheticEvent) => toggleModal(event)}
+        />
+      </div>
       <section className="repeated-tasks-wrapper">
         <section className="repeated-tasks-table">
           <RepeatedTasksTable
@@ -131,13 +171,18 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
             repeatedTasksLoading={repeatedTasksLoading}
           />
         </section>
-        <section className="repeated-tasks-edit">
-          <RepeatedTaskEdit
-            repeatedTaskId={selectedRepeatedTaskIdEdit}
-            selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
-            getRepeatedTasks={getRepeatedTasks}
-          />
-        </section>
+        <AnimatePresence>
+          {displayModal && (
+            <ModalPortal toggleModal={toggleModal}>
+              <RepeatedTaskEdit
+                repeatedTaskId={selectedRepeatedTaskIdEdit}
+                selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
+                getRepeatedTasks={getRepeatedTasks}
+                toggleModal={toggleModal}
+              />
+            </ModalPortal>
+          )}
+        </AnimatePresence>
       </section>
     </main>
   );

@@ -1,8 +1,9 @@
 .repeated-task-schedule-custom-item {
   padding: 10px 20px;
-  border-radius: 5px;
-  color: var(--primary-color);
-  font-weight: var(--medium-font);
+  border-radius: var(--border-radius);
+  color: var(--primary-font-color);
+  font-weight: var(--regular-font);
+  font-size: var(--regular-font-size);
   background-color: var(--white);
   cursor: pointer;
   margin-top: 10px;
@@ -15,4 +16,5 @@
 
 .repeated-task-schedule-custom-item__active {
   background-color: var(--secondary-color);
+  color: var(--white);
 }

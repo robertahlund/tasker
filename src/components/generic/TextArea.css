@@ -11,16 +11,17 @@
 .textarea-label {
   margin-bottom: 5px;
   font-weight: var(--medium-font);
-  color: var(--primary-color);
+  color: var(--primary-font-color);
+  font-size: var(--regular-font-size);
 }
 
 .textarea {
-  background-color: var(--secondary-color);
-  border: none;
-  border-radius: 5px;
+  background-color: var(--light-grey);
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--border-radius);
   font-weight: var(--regular-font);
   font-family: "Roboto", sans-serif;
-  font-size: 1rem;
+  font-size: var(--regular-font-size);
   padding: 10px;
   resize: none;
 }

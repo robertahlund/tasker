@@ -26,8 +26,8 @@ const RepeatedTaskTableRow: FC<RepeatedTaskTableRowProps> = ({
       <span>{repeatedTask.createdAtFormatted}</span>
       <span onClick={() => toggleEditMenu(repeatedTask.id)}>
         <SubMenuIcon
-          height="24px"
-          width="24px"
+          height="18px"
+          width="18px"
         />
       </span>
       {selectedRepeatableTaskId === repeatedTask.id && (

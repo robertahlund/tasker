@@ -1,8 +1,9 @@
 .repeated-tasks-table-wrapper {
   position: relative;
   background-color: var(--white);
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  font-size: var(--regular-font-size);
 }
 
 .repeated-tasks-table-loading-wrapper {

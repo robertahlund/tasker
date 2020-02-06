@@ -1,35 +1,36 @@
 .input-field-wrapper {
-    display: flex;
-    flex-direction: column;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .input-field-wrapper:first-child {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .input-field-label {
-    margin-bottom: 5px;
-    font-weight: var(--medium-font);
-    color: var(--primary-color);
+  margin-bottom: 5px;
+  font-weight: var(--medium-font);
+  color: var(--primary-font-color);
+  font-size: var(--regular-font-size);
 }
 
 .input-field {
-    background-color: var(--secondary-color);
-    border: none;
-    border-radius: 5px;
-    font-weight: var(--regular-font);
-    font-family: "Roboto", sans-serif;
-    font-size: 1rem;
-    padding: 10px;
+  background-color: var(--light-grey);
+  border: 1px solid var(--primary-border-color);
+  border-radius: var(--border-radius);
+  font-weight: var(--regular-font);
+  font-family: "Roboto", sans-serif;
+  font-size: var(--regular-font-size);
+  padding: 10px;
 }
 
 .input-field[type="password"] {
-    font-family: sans-serif;
+  font-family: sans-serif;
 }
 
 .input-field-wrapper .icon-path {
-    position: absolute;
-    right: 5px;
-    top: calc((39px - 24px) / 2);
+  position: absolute;
+  right: 10px;
+  top: calc((39px - 18px) / 2);
 }

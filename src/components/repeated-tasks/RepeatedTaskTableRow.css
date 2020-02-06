@@ -25,15 +25,15 @@
   align-items: center;
   padding: 20px 20px;
   display: flex;
-  background-color: var(--secondary-color);
+  background-color: var(--white);
   position: relative;
 }
 
 .repeated-tasks-table-row:nth-child(odd) {
-  background-color: var(--white);
+  background-color: var(--light-grey);
 }
 
 .repeated-tasks-table-row:last-child {
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }

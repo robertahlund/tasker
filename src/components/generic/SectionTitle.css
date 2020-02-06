@@ -1,3 +1,4 @@
 .section-title {
-  color: var(--primary-color);
+  color: var(--primary-font-color);
+  font-size: var(--page-heading-size);
 }

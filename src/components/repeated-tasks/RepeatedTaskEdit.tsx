@@ -24,12 +24,14 @@ interface RepeatableTaskEditProps {
   repeatedTaskId: string;
   selectRepeatedTaskIdForEdit: (taskId: string) => void;
   getRepeatedTasks: () => Promise<void>;
+  toggleModal: (event?: SyntheticEvent, shouldClose?: boolean, shouldOpen?: boolean) => void;
 }
 
 const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
   repeatedTaskId,
   selectRepeatedTaskIdForEdit,
-  getRepeatedTasks
+  getRepeatedTasks,
+  toggleModal
 }) => {
   const [repeatedTaskForm, setRepeatedTaskForm] = useState<
     RepeatedTaskFormValues
@@ -132,6 +134,7 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
       setSubmitLoading(false);
       selectRepeatedTaskIdForEdit("");
       setRepeatedTaskCreatedDate(new Date());
+      toggleModal(undefined, true);
     } catch (error) {
       console.log(error);
       setSubmitLoading(false);

@@ -1,6 +1,6 @@
 .menu {
   align-items: center;
-  background-color: var(--primary-color);
+  background-color: var(--white);
   display: flex;
   justify-content: space-between;
   padding: 20px 80px;

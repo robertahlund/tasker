@@ -1,23 +1,30 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
 /*4, 5, 7*/
-.App {
-  --primary-color: #4A4A4A;
-  --secondary-color: #EDF1F3;
+
+body {
+  --primary-color: #d8633a;
+  --primary-font-color: #121310;
+  --primary-border-color: #e6e6e6;
+  --secondary-color: #fca05c;
+  --seconday-bg-color: #fcfcfc;
   --white: #fff;
-  --delete-color: #FFB1B1;
-  --bg-color: #F4F6F7;
+  --delete-color: #a73936;
+  --success-color: #58b03e;
+  --light-grey: #f6f6f6;
+  --bg-color: #fff;
   --bold-font: 700;
   --medium-font: 500;
   --regular-font: 400;
   --screen-padding: 80px;
-}
-
-body {
+  --regular-font-size: 13px;
+  --section-heading-size: 18px;
+  --page-heading-size: 26px;
+  --border-radius: 3px;
   margin: 0;
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #F4F6F7;
+  background-color: var(--bg-color);
 }
 
 .main-section {

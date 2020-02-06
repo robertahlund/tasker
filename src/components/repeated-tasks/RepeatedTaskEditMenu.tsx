@@ -24,10 +24,13 @@ const RepeatedTaskEditMenu: FC<RepeatedTaskEditMenuProps> = ({
         className="submenu-item"
         onClick={() => selectRepeatedTaskIdForEdit(taskId)}
       >
-        Edit repeatable task
+        Edit repeated task
       </div>
-      <div className="submenu-item submenu-item__delete" onClick={removeRepeatedTask}>
-        Delete repeatable task
+      <div
+        className="submenu-item submenu-item__delete"
+        onClick={removeRepeatedTask}
+      >
+        Delete repeated task
       </div>
     </motion.div>
   );

@@ -1,11 +1,12 @@
 .repeated-tasks-table-header {
-  background-color: var(--primary-color);
-  color: var(--white);
-  font-size: 1.1rem;
+  background-color: var(--light-grey);
+  color: var(--primary-font-color);
+  font-size: var(--regular-font-size);
   display: flex;
-  padding: 10px 20px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  padding: 20px 20px;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  font-weight: var(--medium-font);
 }
 
 .repeated-tasks-table-header span:nth-child(1) {

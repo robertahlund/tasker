@@ -1,16 +1,14 @@
-import React, {ChangeEvent, FC, SyntheticEvent, useState} from "react";
+import React, { ChangeEvent, FC, SyntheticEvent, useState } from "react";
 import "./Login.css";
 import InputField from "../generic/InputField";
-import {LoginFormValues} from "../../types/types";
+import { LoginFormValues } from "../../types/types";
 import Button from "../generic/Button";
-import {Link} from "react-router-dom";
-import {login} from "../../api/authentication";
+import { Link } from "react-router-dom";
+import { login } from "../../api/authentication";
 
-interface LoginProps {
+interface LoginProps {}
 
-}
-
-const Login: FC<LoginProps> = (props) => {
+const Login: FC<LoginProps> = props => {
   const [loginForm, setLoginForm] = useState<LoginFormValues>({
     email: {
       valid: true,
@@ -23,6 +21,7 @@ const Login: FC<LoginProps> = (props) => {
       value: ""
     }
   });
+  const [loginLoading, setLoginLoading] = useState<boolean>(false);
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLoginForm({
@@ -32,24 +31,26 @@ const Login: FC<LoginProps> = (props) => {
         valid: true,
         validationMessage: ""
       }
-    })
+    });
   };
 
   const handleLogin = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
+    setLoginLoading(true);
     const email: string = loginForm.email.value;
     const password: string = loginForm.password.value;
     try {
-      await login(email, password)
+      await login(email, password);
     } catch (error) {
       console.log(error);
+      setLoginLoading(false);
     }
   };
 
   return (
     <section className="login">
       <div className="login-wrapper">
-        <h1 className="login-header">Log in</h1>
+        <h1 className="login-header">Log in to your account</h1>
         <form className="login-form" onSubmit={handleLogin}>
           <InputField
             id="email"
@@ -72,12 +73,22 @@ const Login: FC<LoginProps> = (props) => {
             validationMessage={loginForm.password.validationMessage}
           />
           <div className="login-form-button-row">
-            <Button type="submit" text="Log in" onSubmit={handleLogin}/>
+            <Button
+              type="submit"
+              text="Log in"
+              onSubmit={handleLogin}
+              disabled={loginLoading}
+              loading={loginLoading}
+            />
           </div>
         </form>
         <div className="login-links">
-          <Link to="/forgot-password" className="login-links-item">Forgot your password?</Link>
-          <Link to="/register" className="login-links-item">Register</Link>
+          <Link to="/forgot-password" className="login-links-item">
+            Forgot your password?
+          </Link>
+          <Link to="/register" className="login-links-item">
+            Register
+          </Link>
         </div>
       </div>
     </section>

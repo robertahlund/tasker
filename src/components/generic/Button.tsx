@@ -26,7 +26,7 @@ const Button: FC<ButtonProps> = ({
     className="button"
     disabled={disabled}
   >
-    {loading ? <LoadingIcon height="16px" width="16px" /> : text }
+    {loading ? <LoadingIcon height="12px" width="12px" /> : text }
   </button>
 );
 

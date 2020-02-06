@@ -1,15 +1,16 @@
 .repeated-tasks-edit-wrapper {
-  background-color: var(--white);
-  padding: 30px 30px;
-  border-radius: 5px;
+  width: 500px;
 }
 
 .repeated-tasks-edit-heading {
-  color: var(--primary-color);
+  color: var(--primary-font-color);
+  font-size: var(--section-heading-size);
+  font-weight: var(--medium-font);
+  text-align: center;
   margin: 0;
 }
 
 .repeated-tasks-edit-form {
-  width: 60%;
+  width: 100%;
   margin-top: 50px;
 }

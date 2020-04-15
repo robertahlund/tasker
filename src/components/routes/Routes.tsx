@@ -12,7 +12,7 @@ import Register from "../register/Register";
 interface RoutesProps {
 }
 
-const Routes: FC<RoutesProps> = (props) => {
+const Routes: FC<RoutesProps> = () => {
     const {authenticated}: { authenticated: boolean } = useContext<Auth>(AuthenticationContext);
     return (
         <Switch>

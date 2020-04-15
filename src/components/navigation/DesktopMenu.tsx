@@ -31,9 +31,9 @@ const DesktopMenu: FC<DesktopMenuProps> = () => {
                         </NavLink>
                     </>
                 )}
-                <NavLink to="/login" onClick={() => authenticated ? logout() : null}>
+                <span className="menu-list--logout" onClick={() => authenticated ? logout() : null}>
                     <MenuItem text={authenticated ? "Log out" : "Log in"}/>
-                </NavLink>
+                </span>
             </ul>
         </div>
     );

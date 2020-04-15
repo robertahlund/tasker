@@ -8,20 +8,24 @@
   padding: 0;
 }
 
-.menu-list a {
+.menu-list--logout {
+  cursor: pointer;
+}
+
+.menu-list a, .menu-list--logout {
   color: inherit;
   text-decoration: none;
 }
 
-.menu-list a:not(:first-child) {
+.menu-list a:not(:first-child), .menu-list--logout {
   margin-left: 20px;
 }
 
-.menu-list a:last-child {
+.menu-list .menu-list--logout {
   padding-right: 0;
 }
 
-.menu-list a {
+.menu-list a, .menu-list--logout {
   color: var(--primary-color);
   border-radius: 5px;
   padding: 10px 25px;

@@ -23,14 +23,18 @@ import { AuthenticationContext } from "../../context/authContext";
 interface RepeatableTaskEditProps {
   repeatedTaskId: string;
   selectRepeatedTaskIdForEdit: (taskId: string) => void;
-  getRepeatedTasks: () => Promise<void>;
-  toggleModal: (event?: SyntheticEvent, shouldClose?: boolean, shouldOpen?: boolean) => void;
+  refreshDataList: () => void;
+  toggleModal: (
+    event?: SyntheticEvent,
+    shouldClose?: boolean,
+    shouldOpen?: boolean
+  ) => void;
 }
 
 const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
   repeatedTaskId,
   selectRepeatedTaskIdForEdit,
-  getRepeatedTasks,
+  refreshDataList,
   toggleModal
 }) => {
   const [repeatedTaskForm, setRepeatedTaskForm] = useState<
@@ -54,7 +58,7 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
 
   useEffect(() => {
     if (repeatedTaskId) {
-      const getRepeatedTask = async (): Promise<void> => {
+      (async (): Promise<void> => {
         const repeatedTask: RepeatedTask = await getRepeatedTaskById(
           repeatedTaskId
         );
@@ -69,8 +73,7 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
           scheduleDays: repeatedTask.scheduleDays
         });
         setRepeatedTaskCreatedDate(repeatedTask.createdAt);
-      };
-      getRepeatedTask();
+      })();
     }
   }, [repeatedTaskId]);
 
@@ -130,7 +133,7 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
         schedule: RepeatedTaskType.EveryDay,
         scheduleDays: [1, 2, 3, 4, 5, 6, 7]
       });
-      await getRepeatedTasks();
+      refreshDataList();
       setSubmitLoading(false);
       selectRepeatedTaskIdForEdit("");
       setRepeatedTaskCreatedDate(new Date());

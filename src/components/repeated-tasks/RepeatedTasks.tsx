@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   FC,
   SyntheticEvent,
-  useCallback,
   useContext,
   useEffect,
   useState
@@ -41,6 +40,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
     false
   );
   const [displayModal, setDisplayModal] = useState<boolean>(false);
+  const [shouldLoadInitialData, setShouldLoadInitialData] = useState<boolean>(true);
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
@@ -49,24 +49,25 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
   }, []);
 
   useEffect(() => {
-    console.log("getting tasks ofc");
-    getRepeatedTasks();
-  }, []);
-
-  const getRepeatedTasks = async (): Promise<void> => {
-    setRepeatedTasksLoading(true);
-    const repeatedTasks: RepeatedTask[] = await getAllRepeatedTasksByUserId(
-      uid
-    );
-    setRepeatedTasks(
-      [...repeatedTasks].filter(
-        (repeatedTask: RepeatedTask) =>
-          repeatedTask.content.indexOf(searchValue) > -1
-      )
-    );
-    setOriginalRepeatedTasks(repeatedTasks);
-    setRepeatedTasksLoading(false);
-  };
+    if (shouldLoadInitialData) {
+      console.log("getting tasks ofc");
+      (async (): Promise<void> => {
+        setRepeatedTasksLoading(true);
+        const repeatedTasks: RepeatedTask[] = await getAllRepeatedTasksByUserId(
+          uid
+        );
+        setRepeatedTasks(
+          [...repeatedTasks].filter(
+            (repeatedTask: RepeatedTask) =>
+              repeatedTask.content.indexOf(searchValue) > -1
+          )
+        );
+        setOriginalRepeatedTasks(repeatedTasks);
+        setRepeatedTasksLoading(false);
+        setShouldLoadInitialData(false);
+      })();
+    }
+  }, [searchValue, uid, shouldLoadInitialData]);
 
   const toggleEditMenu = (taskId: string): void => {
     if (taskId === selectedRepeatedTaskId) {
@@ -177,7 +178,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
               <RepeatedTaskEdit
                 repeatedTaskId={selectedRepeatedTaskIdEdit}
                 selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
-                getRepeatedTasks={getRepeatedTasks}
+                refreshDataList={() => setShouldLoadInitialData(true)}
                 toggleModal={toggleModal}
               />
             </ModalPortal>

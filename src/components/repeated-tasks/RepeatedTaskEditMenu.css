@@ -14,7 +14,7 @@
 
 .submenu-wrapper:before {
   content: "";
-  background-color: var(--white);
+  background-color: var(--seconday-bg-color);
   height: 10px;
   width: 10px;
   display: inline-block;
@@ -31,14 +31,16 @@
   padding: 12px 20px;
   cursor: pointer;
   z-index: 1;
+  color: var(--secondary-font-color)
 }
 
 .submenu-item:not(:last-child) {
-  border-bottom: 1px solid var(--primary-border-color);
+  border-bottom: 1px solid var(--bg-color-lighter);
 }
 
+/*TODO specific delete color?*/
 .submenu-item__delete {
-  color: var(--delete-color);
+  color: var(--link-font-color);
 }
 
 

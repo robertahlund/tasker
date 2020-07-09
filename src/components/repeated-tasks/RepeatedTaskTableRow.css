@@ -25,12 +25,17 @@
   align-items: center;
   padding: 20px 20px;
   display: flex;
-  background-color: var(--white);
+  background-color: var(--bg-color-lighter);
   position: relative;
+  color: var(--light-grey)
+}
+
+.repeated-tasks-table-row .icon-path {
+  fill: var(--link-font-color);
 }
 
 .repeated-tasks-table-row:nth-child(odd) {
-  background-color: var(--light-grey);
+  background-color: var(--seconday-bg-color);
 }
 
 .repeated-tasks-table-row:last-child {

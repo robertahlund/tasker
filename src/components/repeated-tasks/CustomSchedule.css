@@ -4,7 +4,7 @@
   color: var(--primary-font-color);
   font-weight: var(--regular-font);
   font-size: var(--regular-font-size);
-  background-color: var(--white);
+  background-color: var(--light-grey);
   cursor: pointer;
   margin-top: 10px;
   transition: background-color .3s;
@@ -16,5 +16,5 @@
 
 .repeated-task-schedule-custom-item__active {
   background-color: var(--secondary-color);
-  color: var(--white);
+  color: var(--light-grey);
 }

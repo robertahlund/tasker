@@ -2,7 +2,7 @@
     background-color: var(--primary-color);
     border: none;
     border-radius: var(--border-radius);
-    color: var(--white);
+    color: var(--light-grey);
     cursor: pointer;
     font-weight: var(--medium-font);
     font-family: "Roboto", sans-serif;

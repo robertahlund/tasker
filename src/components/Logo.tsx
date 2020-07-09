@@ -2,11 +2,11 @@ import React, { FC } from "react";
 
 interface LogoProps {}
 
-const Logo: FC<LogoProps> = props => {
+const Logo: FC<LogoProps> = () => {
   return (
     <svg
-      id="Component_1_1"
-      data-name="Component 1 – 1"
+      id="Component_2_1"
+      data-name="Component 2 – 1"
       xmlns="http://www.w3.org/2000/svg"
       width="57"
       height="42"
@@ -17,7 +17,7 @@ const Logo: FC<LogoProps> = props => {
         data-name="TASK
 ER."
         transform="translate(12 17)"
-        fill="#121310"
+        fill="#f6f6f6"
         fontSize="18"
         fontFamily="Roboto-Bold, Roboto"
         fontWeight="700"
@@ -34,7 +34,7 @@ ER."
         data-name="Rectangle 93"
         width="6"
         height="42"
-        fill="#dd6e42"
+        fill="#ffbb57"
       />
     </svg>
   );

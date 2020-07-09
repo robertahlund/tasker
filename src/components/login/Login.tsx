@@ -1,10 +1,11 @@
-import React, { ChangeEvent, FC, SyntheticEvent, useState } from "react";
+import React, {ChangeEvent, FC, SyntheticEvent, useEffect, useState} from "react";
 import "./Login.css";
 import InputField from "../generic/InputField";
 import { LoginFormValues } from "../../types/types";
 import Button from "../generic/Button";
 import { Link } from "react-router-dom";
 import { login } from "../../api/authentication";
+import LoginIllustration from "../illustrations/LoginIllustration";
 
 interface LoginProps {}
 
@@ -22,6 +23,10 @@ const Login: FC<LoginProps> = props => {
     }
   });
   const [loginLoading, setLoginLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    document.title = "Login";
+  }, [])
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLoginForm({
@@ -50,45 +55,48 @@ const Login: FC<LoginProps> = props => {
   return (
     <section className="login">
       <div className="login-wrapper">
-        <h1 className="login-header">Log in to your account</h1>
-        <form className="login-form" onSubmit={handleLogin}>
-          <InputField
-            id="email"
-            labelValue="Email"
-            value={loginForm.email.value}
-            type="text"
-            onInputChange={handleFormChange}
-            name="email"
-            valid={loginForm.email.valid}
-            validationMessage={loginForm.email.validationMessage}
-          />
-          <InputField
-            id="password"
-            labelValue="Password"
-            value={loginForm.password.value}
-            type="password"
-            onInputChange={handleFormChange}
-            name="password"
-            valid={loginForm.password.valid}
-            validationMessage={loginForm.password.validationMessage}
-          />
-          <div className="login-form-button-row">
-            <Button
-              type="submit"
-              text="Log in"
-              onSubmit={handleLogin}
-              disabled={loginLoading}
-              loading={loginLoading}
+        <LoginIllustration height="400px" width="400px" />
+        <div className="login-form-wrapper">
+          <h1 className="login-header">Log in to your account</h1>
+          <form className="login-form" onSubmit={handleLogin}>
+            <InputField
+              id="email"
+              labelValue="Email"
+              value={loginForm.email.value}
+              type="text"
+              onInputChange={handleFormChange}
+              name="email"
+              valid={loginForm.email.valid}
+              validationMessage={loginForm.email.validationMessage}
             />
+            <InputField
+              id="password"
+              labelValue="Password"
+              value={loginForm.password.value}
+              type="password"
+              onInputChange={handleFormChange}
+              name="password"
+              valid={loginForm.password.valid}
+              validationMessage={loginForm.password.validationMessage}
+            />
+            <div className="login-form-button-row">
+              <Button
+                type="submit"
+                text="Log in"
+                onSubmit={handleLogin}
+                disabled={loginLoading}
+                loading={loginLoading}
+              />
+            </div>
+          </form>
+          <div className="login-links">
+            <Link to="/forgot-password" className="login-links-item">
+              Forgot your password?
+            </Link>
+            <Link to="/register" className="login-links-item">
+              Register
+            </Link>
           </div>
-        </form>
-        <div className="login-links">
-          <Link to="/forgot-password" className="login-links-item">
-            Forgot your password?
-          </Link>
-          <Link to="/register" className="login-links-item">
-            Register
-          </Link>
         </div>
       </div>
     </section>

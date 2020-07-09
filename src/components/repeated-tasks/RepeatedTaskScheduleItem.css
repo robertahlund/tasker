@@ -3,7 +3,7 @@
   border-radius: var(--border-radius);
   color: var(--primary-font-color);
   font-weight: var(--medium-font);
-  background-color: var(--white);
+  background-color: var(--light-grey);
   font-size: var(--regular-font-size);
   cursor: pointer;
   margin-top: 10px;
@@ -13,5 +13,5 @@
 
 .repeated-task-schedule-item__active {
   background-color: var(--secondary-color);
-  color: var(--white);
+  color: var(--light-grey);
 }

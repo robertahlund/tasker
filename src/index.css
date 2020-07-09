@@ -2,16 +2,19 @@
 /*4, 5, 7*/
 
 body {
-  --primary-color: #d8633a;
-  --primary-font-color: #121310;
-  --primary-border-color: #e6e6e6;
-  --secondary-color: #fca05c;
-  --seconday-bg-color: #fcfcfc;
-  --white: #fff;
+  --bg-color: #211F42;
+  --seconday-bg-color: #593567;
+  --bg-color-lighter: #623B71;
+  --primary-color: #FFBB57;
+  --primary-font-color: #f6f6f6;
+  --secondary-font-color: #FFBB57;
+  --link-font-color: #FF545C;
+  --primary-border-color: #593567;
+  --secondary-color: #FF545C;
+  --light-grey: #f6f6f6;
+  /* TODO fix these colors */
   --delete-color: #a73936;
   --success-color: #58b03e;
-  --light-grey: #f6f6f6;
-  --bg-color: #fff;
   --bold-font: 700;
   --medium-font: 500;
   --regular-font: 400;
@@ -25,6 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
+  box-sizing: border-box;
 }
 
 .main-section {

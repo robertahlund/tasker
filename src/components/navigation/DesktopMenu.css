@@ -1,5 +1,5 @@
 .menu-list {
-  color: var(--white);
+  color: var(--light-grey);
   display: flex;
   font-size: 16px;
   font-weight: var(--medium-font);
@@ -26,13 +26,19 @@
 }
 
 .menu-list a, .menu-list--logout {
-  color: var(--primary-color);
+  color: var(--primary-font-color);
+  border-radius: 5px;
+  padding: 10px 25px;
+}
+
+.menu-list--login {
+  color: var(--secondary-font-color);
   border-radius: 5px;
   padding: 10px 25px;
 }
 
 .menu-list a.menu-list-item__active {
-  color: var(--primary-font-color);
+  color: var(--secondary-font-color);
   transition: color .3s;
 }
 

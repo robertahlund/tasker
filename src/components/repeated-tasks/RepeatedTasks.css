@@ -2,6 +2,16 @@
   width: 300px;
 }
 
+.repeated-tasks {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.repeated-task-wrapper {
+  width: 50vw;
+}
+
 .repeated-tasks-wrapper {
   display: flex;
   flex-direction: row;
@@ -10,7 +20,7 @@
 }
 
 .repeated-tasks-table {
-  width: 60%;
+  width: 100%;
 }
 
 .repeated-tasks-edit {
@@ -21,10 +31,17 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: 60%;
   margin-top: 50px;
+}
+
+.repeated-tasks-search-container .button {
+  color: var(--bg-color);
 }
 
 .repeated-tasks-search-container .input-field-wrapper:first-child {
   margin-bottom: 0;
+}
+
+.repeated-task-illustration-container {
+  padding-top: 250px;
 }

@@ -17,7 +17,7 @@
 
 .input-field {
   background-color: var(--light-grey);
-  border: 1px solid var(--primary-border-color);
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
   font-weight: var(--regular-font);
   font-family: "Roboto", sans-serif;
@@ -33,4 +33,5 @@
   position: absolute;
   right: 10px;
   top: calc((39px - 18px) / 2);
+  fill: var(--bg-color);
 }

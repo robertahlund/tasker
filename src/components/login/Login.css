@@ -8,11 +8,16 @@
 
 .login-wrapper {
   color: var(--primary-font-color);
+  display: flex;
+  justify-content: space-between;
   padding: 50px 150px;
-  width: 300px;
   border-radius: var(--border-radius);
   border: 1px solid var(--primary-border-color);
   background-color: var(--seconday-bg-color);
+}
+
+.login-form-wrapper {
+  padding-left: 150px;
 }
 
 .login-header {
@@ -24,12 +29,20 @@
 }
 
 .login-form {
-  width: 100%;
+  width: 300px;
 }
 
 .login-form-button-row {
   display: flex;
   justify-content: flex-end;
+}
+
+.button {
+  color: var(--seconday-bg-color);
+}
+
+.button .icon-path {
+  fill: var(--seconday-bg-color);
 }
 
 .login-links {
@@ -42,7 +55,7 @@
 
 .login-links-item {
   text-decoration: none;
-  color: var(--primary-font-color);
+  color: var(--link-font-color);
   font-weight: var(--medium-font);
   font-size: var(--regular-font-size);
 }

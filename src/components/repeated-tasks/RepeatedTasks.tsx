@@ -21,10 +21,11 @@ import { AuthenticationContext } from "../../context/authContext";
 import Button from "../generic/Button";
 import ModalPortal from "../generic/ModalPortal";
 import { AnimatePresence } from "framer-motion";
+import RepeatedTaskIllustration from "../illustrations/RepeatedTaskIllustration";
 
 interface RepeatedTasksProps {}
 
-const RepeatedTasks: FC<RepeatedTasksProps> = props => {
+const RepeatedTasks: FC<RepeatedTasksProps> = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedRepeatedTaskId, setSelectedRepeatedTaskId] = useState<string>(
     ""
@@ -40,7 +41,9 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
     false
   );
   const [displayModal, setDisplayModal] = useState<boolean>(false);
-  const [shouldLoadInitialData, setShouldLoadInitialData] = useState<boolean>(true);
+  const [shouldLoadInitialData, setShouldLoadInitialData] = useState<boolean>(
+    true
+  );
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
@@ -59,7 +62,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
         setRepeatedTasks(
           [...repeatedTasks].filter(
             (repeatedTask: RepeatedTask) =>
-              repeatedTask.content.indexOf(searchValue) > -1
+              repeatedTask.content.toLowerCase().indexOf(searchValue) > -1
           )
         );
         setOriginalRepeatedTasks(repeatedTasks);
@@ -85,11 +88,11 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
-    setSearchValue(value);
+    setSearchValue(value.toLowerCase());
     setRepeatedTasks(
       [...originalRepeatedTasks].filter(
         (repeatedTask: RepeatedTask) =>
-          repeatedTask.content.indexOf(event.target.value) > -1
+          repeatedTask.content.toLowerCase().indexOf(event.target.value) > -1
       )
     );
   };
@@ -143,48 +146,53 @@ const RepeatedTasks: FC<RepeatedTasksProps> = props => {
 
   return (
     <main className="main-section repeated-tasks">
-      <SectionTitle title="Repeated Tasks" />
-      <div className="repeated-tasks-search-container">
-        <InputField
-          id="search"
-          value={searchValue}
-          type="text"
-          onInputChange={handleSearchChange}
-          name="search"
-          valid={true}
-          validationMessage=""
-          icon={<SearchIcon height="18px" width="18px" />}
-        />
-        <Button
-          type="button"
-          text="Create"
-          onSubmit={(event: SyntheticEvent) => toggleModal(event)}
-        />
-      </div>
-      <section className="repeated-tasks-wrapper">
-        <section className="repeated-tasks-table">
-          <RepeatedTasksTable
-            selectedRepeatedTaskId={selectedRepeatedTaskId}
-            toggleEditMenu={toggleEditMenu}
-            selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
-            repeatedTasks={repeatedTasks}
-            removeRepeatedTask={removeRepeatedTask}
-            repeatedTasksLoading={repeatedTasksLoading}
+      <div className="repeated-task-wrapper">
+        <SectionTitle title="Repeated Tasks" />
+        <div className="repeated-tasks-search-container">
+          <InputField
+            id="search"
+            value={searchValue}
+            type="text"
+            onInputChange={handleSearchChange}
+            name="search"
+            valid={true}
+            validationMessage=""
+            icon={<SearchIcon height="18px" width="18px" />}
           />
+          <Button
+            type="button"
+            text="Create"
+            onSubmit={(event: SyntheticEvent) => toggleModal(event)}
+          />
+        </div>
+        <section className="repeated-tasks-wrapper">
+          <section className="repeated-tasks-table">
+            <RepeatedTasksTable
+              selectedRepeatedTaskId={selectedRepeatedTaskId}
+              toggleEditMenu={toggleEditMenu}
+              selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
+              repeatedTasks={repeatedTasks}
+              removeRepeatedTask={removeRepeatedTask}
+              repeatedTasksLoading={repeatedTasksLoading}
+            />
+          </section>
+          <AnimatePresence>
+            {displayModal && (
+              <ModalPortal toggleModal={toggleModal}>
+                <RepeatedTaskEdit
+                  repeatedTaskId={selectedRepeatedTaskIdEdit}
+                  selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
+                  refreshDataList={() => setShouldLoadInitialData(true)}
+                  toggleModal={toggleModal}
+                />
+              </ModalPortal>
+            )}
+          </AnimatePresence>
         </section>
-        <AnimatePresence>
-          {displayModal && (
-            <ModalPortal toggleModal={toggleModal}>
-              <RepeatedTaskEdit
-                repeatedTaskId={selectedRepeatedTaskIdEdit}
-                selectRepeatedTaskIdForEdit={selectRepeatedTaskIdForEdit}
-                refreshDataList={() => setShouldLoadInitialData(true)}
-                toggleModal={toggleModal}
-              />
-            </ModalPortal>
-          )}
-        </AnimatePresence>
-      </section>
+      </div>
+      <div className="repeated-task-illustration-container">
+        <RepeatedTaskIllustration height="30vh" width="40vw" />
+      </div>
     </main>
   );
 };

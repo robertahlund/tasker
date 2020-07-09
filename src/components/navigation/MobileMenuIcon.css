@@ -9,7 +9,7 @@
 }
 
 .mobile-navbar {
-  background-color: var(--white);
+  background-color: var(--light-grey);
   border-radius: 5px;
   display: block;
   height: 2px;

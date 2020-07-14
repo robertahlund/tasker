@@ -12,6 +12,7 @@ body {
   --primary-border-color: #593567;
   --secondary-color: #FF545C;
   --light-grey: #f6f6f6;
+  --input-color: #815B90;
   /* TODO fix these colors */
   --delete-color: #a73936;
   --success-color: #58b03e;

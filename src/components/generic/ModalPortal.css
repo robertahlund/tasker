@@ -11,7 +11,7 @@
 }
 
 .modal-content {
-  background-color: var(--light-grey);
+  background-color: var(--seconday-bg-color);
   border-radius: var(--border-radius);
   padding: 40px;
 }

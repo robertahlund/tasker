@@ -16,7 +16,7 @@
 }
 
 .input-field {
-  background-color: var(--light-grey);
+  background-color: var(--input-color);
   border: 1px solid transparent;
   border-radius: var(--border-radius);
   font-weight: var(--regular-font);
@@ -33,5 +33,5 @@
   position: absolute;
   right: 10px;
   top: calc((39px - 18px) / 2);
-  fill: var(--bg-color);
+  fill: var(--primary-font-color);
 }

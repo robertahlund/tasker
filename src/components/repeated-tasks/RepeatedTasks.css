@@ -43,5 +43,7 @@
 }
 
 .repeated-task-illustration-container {
-  padding-top: 250px;
+  display: flex;
+  justify-content: flex-end;
+  width: 25vw;
 }

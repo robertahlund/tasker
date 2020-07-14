@@ -16,9 +16,10 @@
 }
 
 .textarea {
-  background-color: var(--light-grey);
-  border: 1px solid var(--primary-border-color);
+  background-color: var(--input-color);
+  border: 1px solid transparent;
   border-radius: var(--border-radius);
+  color: var(--primary-font-color);
   font-weight: var(--regular-font);
   font-family: "Roboto", sans-serif;
   font-size: var(--regular-font-size);

@@ -22,6 +22,7 @@ import Button from "../generic/Button";
 import ModalPortal from "../generic/ModalPortal";
 import { AnimatePresence } from "framer-motion";
 import RepeatedTaskIllustration from "../illustrations/RepeatedTaskIllustration";
+import Pagination from "../pagination/Pagination";
 
 interface RepeatedTasksProps {}
 
@@ -38,11 +39,17 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
     RepeatedTask[]
   >([]);
   const [repeatedTasksLoading, setRepeatedTasksLoading] = useState<boolean>(
-    false
+    true
   );
   const [displayModal, setDisplayModal] = useState<boolean>(false);
   const [shouldLoadInitialData, setShouldLoadInitialData] = useState<boolean>(
     true
+  );
+  const [tasksPerPage, setTasksPerPage] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [firstTaskNumber, setFirstTaskNumber] = useState<number>(1);
+  const [lastTaskNumber, setLastTaskNumber] = useState<number>(
+    currentPage * tasksPerPage
   );
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
@@ -89,12 +96,6 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
     setSearchValue(value.toLowerCase());
-    setRepeatedTasks(
-      [...originalRepeatedTasks].filter(
-        (repeatedTask: RepeatedTask) =>
-          repeatedTask.content.toLowerCase().indexOf(event.target.value) > -1
-      )
-    );
   };
 
   const removeRepeatedTask = async (): Promise<void> => {
@@ -117,6 +118,54 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  useEffect(() => {
+    handlePagination(currentPage);
+  }, [originalRepeatedTasks]);
+
+  useEffect(() => {
+    handlePagination(1);
+  }, [searchValue]);
+
+  const getFilteredTasks = (): RepeatedTask[] => {
+    console.log("filter")
+    return [...originalRepeatedTasks].filter(
+      (repeatedTask: RepeatedTask) =>
+        repeatedTask.content.toLowerCase().indexOf(searchValue) > -1
+    )
+  };
+
+  const handlePagination = (selectedPage: number): void => {
+    setCurrentPage(selectedPage);
+    setFirstTaskNumber(selectedPage * tasksPerPage - tasksPerPage + 1);
+
+    if (searchValue === "") {
+      if (selectedPage * tasksPerPage > originalRepeatedTasks.length) {
+        setLastTaskNumber(originalRepeatedTasks.length);
+      } else {
+        setLastTaskNumber(selectedPage * tasksPerPage);
+      }
+    } else {
+      if (selectedPage * tasksPerPage > getFilteredTasks().length) {
+        setLastTaskNumber(getFilteredTasks().length);
+      } else {
+        setLastTaskNumber(selectedPage * tasksPerPage);
+      }
+    }
+
+    const newTaskList: RepeatedTask[] = getFilteredTasks()
+      .slice(
+        selectedPage * tasksPerPage - tasksPerPage,
+        selectedPage * tasksPerPage
+      );
+    setRepeatedTasks(newTaskList);
+  };
+
+  const resetPagination = (): void => {
+    setCurrentPage(1);
+    setFirstTaskNumber(1);
+    setLastTaskNumber(tasksPerPage);
   };
 
   const toggleModal = (
@@ -175,6 +224,25 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
               removeRepeatedTask={removeRepeatedTask}
               repeatedTasksLoading={repeatedTasksLoading}
             />
+            {!repeatedTasksLoading && (
+              <Pagination
+                currentPage={currentPage}
+                firstTaskNumber={firstTaskNumber}
+                lastTaskNumber={lastTaskNumber}
+                tasksPerPage={tasksPerPage}
+                totalNumberOfTasks={
+                  searchValue === ""
+                    ? originalRepeatedTasks.length
+                    : getFilteredTasks().length
+                }
+                totalNumberOfPages={Math.ceil(
+                  searchValue === ""
+                    ? originalRepeatedTasks.length / tasksPerPage
+                    : getFilteredTasks().length / tasksPerPage
+                )}
+                handlePagination={handlePagination}
+              />
+            )}
           </section>
           <AnimatePresence>
             {displayModal && (
@@ -191,7 +259,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
         </section>
       </div>
       <div className="repeated-task-illustration-container">
-        <RepeatedTaskIllustration height="30vh" width="40vw" />
+        <RepeatedTaskIllustration height="100%" width="100%" />
       </div>
     </main>
   );

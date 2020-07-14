@@ -1,5 +1,9 @@
 .repeated-tasks-edit-wrapper {
-  width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 45vw;
 }
 
 .repeated-tasks-edit-heading {
@@ -13,4 +17,27 @@
 .repeated-tasks-edit-form {
   width: 100%;
   margin-top: 50px;
+}
+
+.repeated-task-edit-button-container {
+  display: flex;
+  padding-top: 50px;
+  justify-content: flex-end;
+}
+
+.repeated-task-edit-illustration-wrapper {
+
+}
+
+.repeated-task-edit-form-wrapper {
+  position: relative;
+  width: 500px;
+}
+
+.repeated-task-edit-form-wrapper .icon-path {
+  fill: var(--link-font-color);
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
 }

@@ -1,9 +1,8 @@
 .repeated-task-schedule-item {
   padding: 10px 20px;
   border-radius: var(--border-radius);
-  color: var(--primary-font-color);
+  color: var(--link-font-color);
   font-weight: var(--medium-font);
-  background-color: var(--light-grey);
   font-size: var(--regular-font-size);
   cursor: pointer;
   margin-top: 10px;

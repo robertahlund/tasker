@@ -19,6 +19,8 @@ import {
 import format from "date-fns/format";
 import { repeatedTaskDateFormat } from "../../constants/constants";
 import { AuthenticationContext } from "../../context/authContext";
+import RepeatedTaskEditIllustration from "../illustrations/RepeatedTaskEditIllustration";
+import CloseIcon from "../icons/CloseIcon";
 
 interface RepeatableTaskEditProps {
   repeatedTaskId: string;
@@ -146,34 +148,42 @@ const RepeatedTaskEdit: FC<RepeatableTaskEditProps> = ({
 
   return (
     <div className="repeated-tasks-edit-wrapper">
-      <h2 className="repeated-tasks-edit-heading">
-        {repeatedTaskId ? "Edit repeated task" : "Create new repeated task"}
-      </h2>
-      <form className="repeated-tasks-edit-form">
-        <TextArea
-          id="content"
-          value={repeatedTaskForm.content.value}
-          onInputChange={handleTextAreaChange}
-          name="content"
-          valid={repeatedTaskForm.content.valid}
-          validationMessage={repeatedTaskForm.content.validationMessage}
-          labelValue="Content"
-          rows={5}
-        />
-        <RepeatedTaskSchedule
-          selectedTaskSchedule={repeatedTaskForm.schedule}
-          handleScheduleChange={handleScheduleChange}
-          selectedScheduleDays={repeatedTaskForm.scheduleDays}
-          handleCustomScheduleDaysChange={handleCustomScheduleDaysChange}
-        />
-        <Button
-          type="button"
-          text="Save"
-          onSubmit={createRepeatedTask}
-          loading={submitLoading}
-          disabled={submitLoading}
-        />
-      </form>
+      <div className="repeated-task-edit-illustration-wrapper">
+        <RepeatedTaskEditIllustration height="500px" width="500px" />
+      </div>
+      <div className="repeated-task-edit-form-wrapper">
+        <CloseIcon height="24px" width="24px" onClickFunction={() => toggleModal(undefined, true)}/>
+        <h2 className="repeated-tasks-edit-heading">
+          {repeatedTaskId ? "Edit repeated task" : "Create new repeated task"}
+        </h2>
+        <form className="repeated-tasks-edit-form">
+          <TextArea
+            id="content"
+            value={repeatedTaskForm.content.value}
+            onInputChange={handleTextAreaChange}
+            name="content"
+            valid={repeatedTaskForm.content.valid}
+            validationMessage={repeatedTaskForm.content.validationMessage}
+            labelValue="Content"
+            rows={3}
+          />
+          <RepeatedTaskSchedule
+            selectedTaskSchedule={repeatedTaskForm.schedule}
+            handleScheduleChange={handleScheduleChange}
+            selectedScheduleDays={repeatedTaskForm.scheduleDays}
+            handleCustomScheduleDaysChange={handleCustomScheduleDaysChange}
+          />
+          <div className="repeated-task-edit-button-container">
+            <Button
+              type="button"
+              text="Save"
+              onSubmit={createRepeatedTask}
+              loading={submitLoading}
+              disabled={submitLoading}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

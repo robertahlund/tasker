@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--regular-font-size);
+  font-size: var(--primary-font-size);
   color: var(--primary-font-color);
   margin-top: 25px;
 }

@@ -1,0 +1,24 @@
+.date-selector {
+  width: 250px;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary-font-color);
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
+  padding: 5px;
+  font-size: var(--secondary-font-size);
+  font-weight: var(--medium-font);
+}
+
+.date-selector .icon-path {
+  fill: var(--primary-font-color);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.date-selector__icon {
+
+}

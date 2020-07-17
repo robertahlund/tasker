@@ -57,7 +57,7 @@
   text-decoration: none;
   color: var(--link-font-color);
   font-weight: var(--medium-font);
-  font-size: var(--regular-font-size);
+  font-size: var(--primary-font-size);
 }
 
 .login-links-item:not(:last-child) {

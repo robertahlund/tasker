@@ -1,0 +1,21 @@
+.task-filter-item {
+  margin: 5px 0 5px 5px;
+  color: var(--link-font-color);
+  font-size: var(--secondary-font-size);
+  font-weight: var(--medium-font);
+  padding: 0 20px;
+  cursor: pointer;
+  height: 35px;
+  display: flex;
+  align-items: center;
+}
+
+.task-filter-item:first-child {
+  margin-top: 0;
+}
+
+.task-filter-item--active {
+  color: var(--primary-font-color);
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+}

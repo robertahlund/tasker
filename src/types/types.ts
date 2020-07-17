@@ -1,4 +1,4 @@
-import {RepeatedTaskType} from "../enums/enums";
+import {RepeatedTaskType, TaskFilter} from "../enums/enums";
 
 export interface Auth {
   uid: string;
@@ -39,4 +39,14 @@ export interface IconProps {
   onClickFunction?: () => void;
 }
 
+export interface TaskFilterTypes {
+  types: TaskFilter[];
+}
+
 export type WeekDayAbbreviation = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
+
+export type MonthFormat = "MMMM";
+export type YearFormat = "y";
+export type WeekFormat = "w";
+export type DayFormat = "EEEE";
+export type DateDayFormat = "MMM d";

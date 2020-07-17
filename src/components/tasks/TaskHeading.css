@@ -1,0 +1,13 @@
+.task-item-heading {
+  font-weight: var(--medium-font);
+  margin-bottom: 20px;
+}
+
+.task-item-heading__medium {
+  font-size: var(--secondary-font-size);
+}
+
+.task-item-heading__small {
+  font-size: var(--primary-font-size);
+  margin-top: 5px;
+}

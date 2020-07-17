@@ -1,0 +1,19 @@
+.tasks {}
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tasks-filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tasks-container {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+}

@@ -12,7 +12,7 @@
   margin-bottom: 5px;
   font-weight: var(--medium-font);
   color: var(--primary-font-color);
-  font-size: var(--regular-font-size);
+  font-size: var(--primary-font-size);
 }
 
 .textarea {
@@ -22,7 +22,7 @@
   color: var(--primary-font-color);
   font-weight: var(--regular-font);
   font-family: "Roboto", sans-serif;
-  font-size: var(--regular-font-size);
+  font-size: var(--primary-font-size);
   padding: 10px;
   resize: none;
 }

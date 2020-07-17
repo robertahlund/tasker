@@ -20,7 +20,8 @@ body {
   --medium-font: 500;
   --regular-font: 400;
   --screen-padding: 80px;
-  --regular-font-size: 13px;
+  --primary-font-size: 13px;
+  --secondary-font-size: 14px;
   --section-heading-size: 18px;
   --page-heading-size: 26px;
   --border-radius: 3px;

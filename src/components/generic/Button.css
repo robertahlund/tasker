@@ -6,7 +6,7 @@
     cursor: pointer;
     font-weight: var(--medium-font);
     font-family: "Roboto", sans-serif;
-    font-size: var(--regular-font-size);
+    font-size: var(--primary-font-size);
     margin: 20px 0 0 0;
     padding: 10px 35px;
 }

@@ -1,7 +1,7 @@
 .repeated-tasks-table-header {
   background-color: var(--seconday-bg-color);
   color: var(--link-font-color);
-  font-size: var(--regular-font-size);
+  font-size: var(--primary-font-size);
   display: flex;
   padding: 20px 20px;
   border-top-left-radius: var(--border-radius);

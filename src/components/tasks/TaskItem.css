@@ -1,0 +1,25 @@
+.task-item {
+  background-color: var(--seconday-bg-color);
+  border-radius: var(--border-radius);
+  color: var(--primary-font-color);
+  padding: 15px;
+  margin-left: 15px;
+  width: calc(((100% - 5 * 45px) / 6) - 5px);
+  position: relative;
+}
+
+.task-item:nth-child(n + 7) {
+  margin-top: 15px;
+}
+
+.task-item:nth-child(6n + 1) {
+  margin-left: 0;
+}
+
+.task-item .icon-path {
+  fill: var(--link-font-color);
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}

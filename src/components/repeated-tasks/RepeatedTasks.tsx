@@ -1,9 +1,9 @@
 import React, {
   ChangeEvent,
-  FC,
+  FC, MutableRefObject,
   SyntheticEvent,
   useContext,
-  useEffect,
+  useEffect, useRef,
   useState
 } from "react";
 import "./RepeatedTasks.css";
@@ -53,6 +53,8 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
   );
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
+  
+  const searchValueRef: MutableRefObject<string | undefined> = useRef();
 
   useEffect(() => {
     document.title = "Repeated Tasks";
@@ -95,6 +97,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
+    searchValueRef.current = value.toLowerCase();
     setSearchValue(value.toLowerCase());
   };
 
@@ -120,16 +123,17 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
     }
   };
 
-  useEffect(() => {
-    handlePagination(currentPage);
-  }, [originalRepeatedTasks]);
+  /* TODO Refactor handlePagination into the useEffect hook, which should be shared between searchValue and originalRepeatedTasks */
 
   useEffect(() => {
-    handlePagination(1);
-  }, [searchValue]);
+    if (searchValue === searchValueRef.current) {
+      handlePagination(1);
+    } else {
+      handlePagination(currentPage);
+    }
+  }, [searchValue, originalRepeatedTasks])
 
   const getFilteredTasks = (): RepeatedTask[] => {
-    console.log("filter")
     return [...originalRepeatedTasks].filter(
       (repeatedTask: RepeatedTask) =>
         repeatedTask.content.toLowerCase().indexOf(searchValue) > -1
@@ -160,12 +164,6 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
         selectedPage * tasksPerPage
       );
     setRepeatedTasks(newTaskList);
-  };
-
-  const resetPagination = (): void => {
-    setCurrentPage(1);
-    setFirstTaskNumber(1);
-    setLastTaskNumber(tasksPerPage);
   };
 
   const toggleModal = (

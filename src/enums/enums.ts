@@ -14,3 +14,8 @@ export enum WeekDays {
   Saturday,
   Sunday
 }
+
+export enum TaskFilter {
+  Month = "Month",
+  Week = "Week"
+}

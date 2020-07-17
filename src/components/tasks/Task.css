@@ -1,0 +1,16 @@
+.task {
+  background-color: var(--bg-color);
+  padding: 10px;
+  border-radius: var(--border-radius);
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+}
+
+.task--completed {
+  opacity: .5;
+}
+
+.task-content {
+  font-size: var(--primary-font-size);
+}

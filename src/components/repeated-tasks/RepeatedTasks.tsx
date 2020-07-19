@@ -1,10 +1,13 @@
 import React, {
   ChangeEvent,
-  FC, MutableRefObject,
+  FC,
+  MutableRefObject,
   SyntheticEvent,
   useContext,
-  useEffect, useRef,
-  useState
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
 } from "react";
 import "./RepeatedTasks.css";
 import SectionTitle from "../generic/SectionTitle";
@@ -14,7 +17,7 @@ import RepeatedTasksTable from "./RepeatedTasksTable";
 import RepeatedTaskEdit from "./RepeatedTaskEdit";
 import {
   deleteRepeatedTask,
-  getAllRepeatedTasksByUserId
+  getAllRepeatedTasksByUserId,
 } from "../../api/repeatedTasks";
 import { Auth, RepeatedTask } from "../../types/types";
 import { AuthenticationContext } from "../../context/authContext";
@@ -53,8 +56,9 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
   );
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
-  
+
   const searchValueRef: MutableRefObject<string | undefined> = useRef();
+  const currentPageRef: MutableRefObject<number | undefined> = useRef();
 
   useEffect(() => {
     document.title = "Repeated Tasks";
@@ -123,48 +127,49 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
     }
   };
 
-  /* TODO Refactor handlePagination into the useEffect hook, which should be shared between searchValue and originalRepeatedTasks */
-
-  useEffect(() => {
-    if (searchValue === searchValueRef.current) {
-      handlePagination(1);
-    } else {
-      handlePagination(currentPage);
-    }
-  }, [searchValue, originalRepeatedTasks])
-
-  const getFilteredTasks = (): RepeatedTask[] => {
+  const getFilteredTasks: () => RepeatedTask[] = useCallback(() => {
     return [...originalRepeatedTasks].filter(
       (repeatedTask: RepeatedTask) =>
         repeatedTask.content.toLowerCase().indexOf(searchValue) > -1
-    )
-  };
+    );
+  }, [originalRepeatedTasks, searchValue]);
 
-  const handlePagination = (selectedPage: number): void => {
-    setCurrentPage(selectedPage);
-    setFirstTaskNumber(selectedPage * tasksPerPage - tasksPerPage + 1);
-
-    if (searchValue === "") {
-      if (selectedPage * tasksPerPage > originalRepeatedTasks.length) {
-        setLastTaskNumber(originalRepeatedTasks.length);
+  const handlePagination: (selectedPage: number) => void = useCallback(
+    (selectedPage: number) => {
+      setCurrentPage(selectedPage);
+      currentPageRef.current = selectedPage;
+      setFirstTaskNumber(selectedPage * tasksPerPage - tasksPerPage + 1);
+      if (searchValue === "") {
+        if (selectedPage * tasksPerPage > originalRepeatedTasks.length) {
+          setLastTaskNumber(originalRepeatedTasks.length);
+        } else {
+          setLastTaskNumber(selectedPage * tasksPerPage);
+        }
       } else {
-        setLastTaskNumber(selectedPage * tasksPerPage);
+        if (selectedPage * tasksPerPage > getFilteredTasks().length) {
+          setLastTaskNumber(getFilteredTasks().length);
+        } else {
+          setLastTaskNumber(selectedPage * tasksPerPage);
+        }
       }
-    } else {
-      if (selectedPage * tasksPerPage > getFilteredTasks().length) {
-        setLastTaskNumber(getFilteredTasks().length);
-      } else {
-        setLastTaskNumber(selectedPage * tasksPerPage);
-      }
-    }
-
-    const newTaskList: RepeatedTask[] = getFilteredTasks()
-      .slice(
+      const newTaskList: RepeatedTask[] = getFilteredTasks().slice(
         selectedPage * tasksPerPage - tasksPerPage,
         selectedPage * tasksPerPage
       );
-    setRepeatedTasks(newTaskList);
-  };
+      setRepeatedTasks(newTaskList);
+    },
+    [getFilteredTasks, originalRepeatedTasks.length, searchValue, tasksPerPage]
+  );
+
+  useEffect(() => {
+    if (searchValue === searchValueRef.current && !currentPageRef.current) {
+      handlePagination(1);
+      currentPageRef.current = undefined;
+    } else {
+      handlePagination(currentPage);
+      currentPageRef.current = undefined;
+    }
+  }, [searchValue, originalRepeatedTasks, currentPage, handlePagination]);
 
   const toggleModal = (
     event?: SyntheticEvent,

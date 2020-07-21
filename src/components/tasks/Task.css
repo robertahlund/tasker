@@ -8,9 +8,20 @@
 }
 
 .task--completed {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .task-content {
   font-size: var(--primary-font-size);
+}
+
+.task .input-field {
+  margin: 0;
+  padding: 0;
+  width: 95%;
+  background-color: var(--bg-color);
+}
+
+.task .input-field-wrapper:first-child {
+  margin-bottom: 0;
 }

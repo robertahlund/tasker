@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 import { format } from "date-fns";
-import {monthFormat, weekFormat, yearFormat} from "../../constants/constants";
+import { monthFormat, weekFormat, yearFormat } from "../../constants/constants";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import "./DateSelector.css";
 
@@ -12,6 +12,7 @@ interface DateSelectorProps {
   decrementMonth: () => void;
   incrementWeek: () => void;
   decrementWeek: () => void;
+  resetDate: () => void;
 }
 
 const DateSelector: FC<DateSelectorProps> = ({
@@ -20,7 +21,8 @@ const DateSelector: FC<DateSelectorProps> = ({
   incrementMonth,
   decrementMonth,
   incrementWeek,
-  decrementWeek
+  decrementWeek,
+  resetDate,
 }) => (
   <div className="date-selector">
     <span
@@ -29,7 +31,12 @@ const DateSelector: FC<DateSelectorProps> = ({
     >
       <ArrowLeftIcon width="24px" height="24px" />
     </span>
-    {format(date, isMonth ? monthFormat + " "  + yearFormat : "'Week' " + weekFormat)}
+    <span className="date-selector__text" onClick={resetDate}>
+      {format(
+        date,
+        isMonth ? monthFormat + " " + yearFormat : "'Week' " + weekFormat
+      )}
+    </span>
     <span
       className="date-selector__icon"
       onClick={isMonth ? incrementMonth : incrementWeek}

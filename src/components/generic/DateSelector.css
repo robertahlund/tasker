@@ -20,5 +20,8 @@
 }
 
 .date-selector__icon {
+}
 
+.date-selector__text {
+  cursor: pointer;
 }

@@ -1,5 +1,14 @@
-import {DateDayFormat, DayFormat, MonthFormat, TaskFilterTypes, WeekFormat, YearFormat} from "../types/types";
-import {TaskFilter} from "../enums/enums";
+import {
+  DateDayFormat,
+  DayFormat,
+  MonthFormat,
+  TaskFilterTypes,
+  WeekFormat,
+  YearFormat,
+  Task,
+  TaskFormattedDateFormat,
+} from "../types/types";
+import { TaskFilter } from "../enums/enums";
 
 export const repeatedTasksPath: string = "repeated_tasks";
 export const tasksPath: string = "tasks";
@@ -9,9 +18,19 @@ export const yearFormat: YearFormat = "y";
 export const weekFormat: WeekFormat = "w";
 export const dayFormat: DayFormat = "EEEE";
 export const dateDayFormat: DateDayFormat = "MMM d";
+export const taskDateFormat: TaskFormattedDateFormat = "y-MM-dd";
 
 export const taskFilters: TaskFilterTypes = {
-  types: [TaskFilter.Month, TaskFilter.Week]
+  types: [TaskFilter.Month, TaskFilter.Week],
+};
+
+export const defaultTask: Task = {
+  id: "",
+  uid: "",
+  content: "",
+  date: new Date(),
+  dateFormatted: "",
+  isRepeated: false,
 };
 
 export const modalPortal = document.getElementById("modal-portal");

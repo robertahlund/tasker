@@ -48,7 +48,7 @@ const RepeatedTasks: FC<RepeatedTasksProps> = () => {
   const [shouldLoadInitialData, setShouldLoadInitialData] = useState<boolean>(
     true
   );
-  const [tasksPerPage, setTasksPerPage] = useState<number>(10);
+  const [tasksPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [firstTaskNumber, setFirstTaskNumber] = useState<number>(1);
   const [lastTaskNumber, setLastTaskNumber] = useState<number>(

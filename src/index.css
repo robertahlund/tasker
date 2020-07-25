@@ -2,17 +2,18 @@
 /*4, 5, 7*/
 
 body {
-  --bg-color: #211F42;
+  --bg-color: #211f42;
   --seconday-bg-color: #593567;
-  --bg-color-lighter: #623B71;
-  --primary-color: #FFBB57;
+  --completed-color: #3c2954;
+  --bg-color-lighter: #623b71;
+  --primary-color: #ffbb57;
   --primary-font-color: #f6f6f6;
-  --secondary-font-color: #FFBB57;
-  --link-font-color: #FF545C;
+  --secondary-font-color: #ffbb57;
+  --link-font-color: #ff545c;
   --primary-border-color: #593567;
-  --secondary-color: #FF545C;
+  --secondary-color: #ff545c;
   --light-grey: #f6f6f6;
-  --input-color: #815B90;
+  --input-color: #815b90;
   /* TODO fix these colors */
   --delete-color: #a73936;
   --success-color: #58b03e;

@@ -38,8 +38,15 @@ export interface Task {
   uid: string;
   content: string;
   isRepeated: boolean;
+  isCompleted: boolean;
+  repeatedTaskId?: string;
   date: Date;
   dateFormatted: string;
+}
+
+export interface TaskItemEdit {
+  taskId: string | null;
+  date: Date | null;
 }
 
 export interface IconProps {

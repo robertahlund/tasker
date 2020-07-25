@@ -1,0 +1,50 @@
+.task > .submenu-wrapper {
+  position: absolute;
+  right: -185px;
+  top: -40px;
+  background-color: var(--seconday-bg-color);
+  border-radius: var(--border-radius);
+  padding: 0 10px;
+  z-index: 2;
+  text-align: center;
+  color: var(--primary-font-color);
+  border: 1px solid var(--bg-color);
+  font-weight: var(--medium-font);
+  font-size: var(--primary-font-size);
+}
+
+.task > .submenu-wrapper-offset {
+  top: -20px;
+  right: -188px;
+}
+
+.task > .submenu-wrapper:before {
+  content: "";
+  background-color: var(--seconday-bg-color);
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  position: absolute;
+  left: -6px;
+  top: calc(50% - 10px);
+  transform: rotate(45deg);
+  z-index: -1;
+  border-left: 1px solid var(--bg-color);
+  border-bottom: 1px solid var(--bg-color);
+}
+
+.submenu-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  z-index: 1;
+  color: var(--secondary-font-color);
+}
+
+.submenu-item:not(:last-child) {
+  border-bottom: 1px solid var(--bg-color-lighter);
+}
+
+/*TODO specific delete color?*/
+.submenu-item__delete {
+  color: var(--link-font-color);
+}

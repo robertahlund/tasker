@@ -7,6 +7,7 @@ import {
   YearFormat,
   Task,
   TaskFormattedDateFormat,
+  TaskItemEdit,
 } from "../types/types";
 import { TaskFilter } from "../enums/enums";
 
@@ -28,9 +29,15 @@ export const defaultTask: Task = {
   id: "",
   uid: "",
   content: "",
+  isCompleted: false,
   date: new Date(),
   dateFormatted: "",
   isRepeated: false,
+};
+
+export const defaultTaskItemEdit: TaskItemEdit = {
+  taskId: null,
+  date: null,
 };
 
 export const modalPortal = document.getElementById("modal-portal");

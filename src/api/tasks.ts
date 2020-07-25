@@ -7,6 +7,7 @@ const db = firebase.firestore();
 
 export const createOrUpdateTask = async (task: Task): Promise<Task> => {
   try {
+    task.id = task.id.indexOf("repeated") > -1 ? "" : task.id;
     if (!task.id) {
       task.id = generateGuid();
       await db.collection(tasksPath).doc(task.id).set(task);
@@ -41,6 +42,7 @@ export const getTaskById = async (taskId: string): Promise<Task> => {
             id: document.data()!.id,
             uid: document.data()!.uid,
             content: document.data()!.content,
+            isCompleted: document.data()!.isCompleted,
             date: document.data()!.date,
             dateFormatted: document.data()!.dateFormatted,
             isRepeated: document.data()!.isRepeated,
@@ -55,9 +57,7 @@ export const getTaskById = async (taskId: string): Promise<Task> => {
   }
 };
 
-export const getAllRepeatedTasksByUserId = async (
-  userId: string
-): Promise<Task[]> => {
+export const getAllTasksByUserId = async (userId: string): Promise<Task[]> => {
   try {
     const tasks: Task[] = [];
     await db
@@ -77,7 +77,7 @@ export const getAllRepeatedTasksByUserId = async (
   }
 };
 
-export const getAllRepeatedTasksByDateRange = async (
+export const getAllTasksByDateRange = async (
   userId: string,
   startDate: Date,
   endDate: Date

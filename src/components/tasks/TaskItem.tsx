@@ -1,18 +1,31 @@
-import React, { FC, ChangeEvent, KeyboardEvent } from "react";
+import React, {
+  FC,
+  ChangeEvent,
+  KeyboardEvent,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import "./TaskItem.css";
 import TaskHeading from "./TaskHeading";
 import Task from "./Task";
 import AddIcon from "../icons/AddIcon";
-import { Task as TaskType } from "../../types/types";
+import { Task as TaskType, TaskItemEdit } from "../../types/types";
 
 interface TaskItemProps {
   date: Date;
   isCreateNew: boolean;
   setCreateNew: () => void;
+  saveTask: (event?: KeyboardEvent<HTMLInputElement>) => void;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   newTaskContent: string;
   onKeyPress: (event: KeyboardEvent<HTMLInputElement>) => void;
   tasks: TaskType[];
+  setTaskItemMenuId: Dispatch<SetStateAction<string | null>>;
+  taskItemMenuId: string | null;
+  setTaskItemEdit: Dispatch<SetStateAction<TaskItemEdit>>;
+  taskItemEdit: TaskItemEdit;
+  deleteTask: () => Promise<void>;
+  markTaskAsCompleted: () => Promise<void>;
 }
 
 const TaskItem: FC<TaskItemProps> = ({
@@ -23,6 +36,13 @@ const TaskItem: FC<TaskItemProps> = ({
   newTaskContent,
   onKeyPress,
   tasks,
+  saveTask,
+  setTaskItemMenuId,
+  taskItemMenuId,
+  setTaskItemEdit,
+  deleteTask,
+  taskItemEdit,
+  markTaskAsCompleted,
 }) => {
   return (
     <div className="task-item">
@@ -36,16 +56,36 @@ const TaskItem: FC<TaskItemProps> = ({
             newTaskContent={newTaskContent}
             taskContent={newTaskContent}
             onKeyPress={onKeyPress}
+            saveTask={saveTask}
+            setTaskItemMenuId={setTaskItemMenuId}
+            taskItemMenuId={taskItemMenuId}
+            taskId=""
+            setTaskItemEdit={setTaskItemEdit}
+            deleteTask={deleteTask}
+            isCompleted={false}
+            markTaskAsCompleted={markTaskAsCompleted}
+            isRepeated={false}
+            date={date}
           />
         )}
         {tasks.map((task: TaskType) => (
           <Task
-            isEdit={false}
+            isEdit={taskItemEdit.taskId === task.id}
             onInputChange={onInputChange}
-            newTaskContent={task.content}
+            newTaskContent={newTaskContent}
             taskContent={task.content}
             onKeyPress={onKeyPress}
+            saveTask={saveTask}
             key={task.id}
+            setTaskItemMenuId={setTaskItemMenuId}
+            taskItemMenuId={taskItemMenuId}
+            taskId={task.id}
+            setTaskItemEdit={setTaskItemEdit}
+            deleteTask={deleteTask}
+            isCompleted={task.isCompleted}
+            markTaskAsCompleted={markTaskAsCompleted}
+            isRepeated={task.isRepeated}
+            date={date}
           />
         ))}
       </div>

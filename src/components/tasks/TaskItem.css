@@ -16,7 +16,7 @@
   margin-left: 0;
 }
 
-.task-item .icon-path {
+.task-item > .icon-path {
   fill: var(--link-font-color);
   cursor: pointer;
   position: absolute;

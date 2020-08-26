@@ -44,7 +44,6 @@ import {
 } from "../../api/tasks";
 import { endOfWeek } from "date-fns/esm";
 import { getAllRepeatedTasksByUserId } from "../../api/repeatedTasks";
-import generateGuid from "uuid/v4";
 
 interface TasksProps {}
 

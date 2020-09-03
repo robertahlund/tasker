@@ -2,7 +2,6 @@
   background-color: var(--bg-color);
   padding: 10px;
   border-radius: var(--border-radius);
-  margin-top: 7px;
   display: flex;
   align-items: center;
   position: relative;
@@ -53,4 +52,8 @@
 
 .task-content__icon-container > .icon-path {
   fill: var(--link-font-color);
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
 }

@@ -46,6 +46,8 @@ export const getTaskById = async (taskId: string): Promise<Task> => {
             date: document.data()!.date,
             dateFormatted: document.data()!.dateFormatted,
             isRepeated: document.data()!.isRepeated,
+            isActive: document.data()!.isActive,
+            order: document.data()!.order,
           };
         } else {
           return Promise.reject("No task with that id exists.");
@@ -64,6 +66,7 @@ export const getAllTasksByUserId = async (userId: string): Promise<Task[]> => {
       .collection(tasksPath)
       .where("uid", "==", userId)
       .orderBy("createdAt", "desc")
+      .orderBy("order", "asc")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((document) => {
@@ -100,5 +103,19 @@ export const getAllTasksByDateRange = async (
   } catch (error) {
     console.log(error);
     return Promise.reject("Error getting tasks.");
+  }
+};
+
+export const updateTaskOrder = async (tasks: Task[]): Promise<void> => {
+  const db = firebase.firestore();
+  const batch = db.batch();
+  try {
+    tasks.forEach((task: Task) => {
+      const taskRef = db.collection(tasksPath).doc(task.id);
+      batch.update(taskRef, task);
+    });
+    await batch.commit();
+  } catch (error) {
+    console.log(error);
   }
 };

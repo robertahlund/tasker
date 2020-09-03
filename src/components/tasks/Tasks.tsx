@@ -40,10 +40,28 @@ import { AuthenticationContext } from "../../context/authContext";
 import {
   createOrUpdateTask,
   getAllTasksByDateRange,
-  deleteTask,
+  updateTaskOrder,
 } from "../../api/tasks";
 import { endOfWeek } from "date-fns/esm";
 import { getAllRepeatedTasksByUserId } from "../../api/repeatedTasks";
+import { DropResult } from "react-beautiful-dnd";
+
+const reorder = (list: Task[], startIndex: number, endIndex: number) => {
+  const result: Task[] = Array.from(list);
+  if (startIndex > result.length - 1) {
+    const [removed] = result.splice(result.length - 1, 1);
+    result.splice(endIndex, 0, removed);
+    console.log(result);
+    result.forEach((task: Task, index: number) => (task.order = index));
+  } else {
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    console.log(result);
+    result.forEach((task: Task, index: number) => (task.order = index));
+  }
+  updateTaskOrder(result);
+  return result;
+};
 
 interface TasksProps {}
 
@@ -62,6 +80,7 @@ const Tasks: FC<TasksProps> = () => {
     defaultTaskItemEdit
   );
   const [repeatedTasks, setRepeatedTasks] = useState<RepeatedTask[]>([]);
+  const [repeatedTaskIdSync, setRepeatedTaskIdSync] = useState<string>("");
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
@@ -86,7 +105,6 @@ const Tasks: FC<TasksProps> = () => {
           const repeatedTask: RepeatedTask = repeatedTasks.filter(
             (repeatedTask: RepeatedTask) => repeatedTask.id === repeatedTaskId
           )[0];
-          console.log(repeatedTask);
           setTaskEdit({
             id: taskItemEdit.taskId,
             content: repeatedTask.content,
@@ -96,6 +114,15 @@ const Tasks: FC<TasksProps> = () => {
             repeatedTaskId,
             dateFormatted: format(taskItemEdit.date, taskDateFormat),
             date: taskItemEdit.date,
+            isActive: true,
+            order: tasks.filter(
+              (task: Task) =>
+                task.dateFormatted ===
+                format(
+                  taskItemEdit.date ? taskItemEdit.date : new Date(),
+                  taskDateFormat
+                )
+            ).length,
           });
         }
       }
@@ -180,13 +207,26 @@ const Tasks: FC<TasksProps> = () => {
         const taskIndex: number = tasks.findIndex(
           (task: Task) => task.id === taskItemEdit.taskId
         );
-        setTasks((previousTasks: Task[]) => {
-          return [
-            ...previousTasks.slice(0, taskIndex),
-            taskEdit,
-            ...previousTasks.slice(taskIndex + 1),
-          ];
-        });
+        console.log(id, taskIndex, "SAVING REPEATED TASK");
+        if (taskIndex > -1) {
+          setTasks((previousTasks: Task[]) => {
+            return [
+              ...previousTasks.slice(0, taskIndex),
+              taskEdit,
+              ...previousTasks.slice(taskIndex + 1),
+            ];
+          });
+        } else {
+          setTasks((previousTasks: Task[]) => {
+            return [
+              ...previousTasks,
+              {
+                ...taskEdit,
+                id,
+              },
+            ];
+          });
+        }
       } else {
         setTasks((previousTasks: Task[]) => {
           return [
@@ -218,10 +258,15 @@ const Tasks: FC<TasksProps> = () => {
             addDays(selectedDate, createNewIndex),
             taskDateFormat
           ),
+          order: tasks.filter(
+            (task: Task) =>
+              task.dateFormatted ===
+              format(addDays(selectedDate, createNewIndex), taskDateFormat)
+          ).length,
         };
       });
     }
-  }, [createNewIndex, selectedDate, uid]);
+  }, [createNewIndex, selectedDate, uid, tasks]);
 
   const getTasksByDate: (date: Date) => Task[] = useCallback(
     (date: Date) => {
@@ -240,27 +285,19 @@ const Tasks: FC<TasksProps> = () => {
       );
       repeatedTasksToday.forEach(
         (repeatedTask: RepeatedTask, index: number) => {
-          const repeatedTaskAlreadyExists: boolean =
-            tasksToday.findIndex((task: Task) => {
-              const taskDayOfWeek: number = getISODay(
-                new Date(task.dateFormatted)
-              );
-              if (
-                task.repeatedTaskId === repeatedTask.id &&
-                repeatedTask.scheduleDays.includes(dayOfWeek)
-              ) {
-                console.log(
-                  repeatedTask.scheduleDays,
-                  taskDayOfWeek,
-                  task.dateFormatted,
-                  dayOfWeek
-                );
-                console.log("FOUND DUPLICATE @", task.dateFormatted);
-                return 1;
-              } else {
-                return -1;
-              }
-            }) > -1;
+          let repeatedTaskAlreadyExists: boolean = false;
+          tasksToday.findIndex((task: Task) => {
+            if (
+              task.repeatedTaskId === repeatedTask.id &&
+              repeatedTask.scheduleDays.includes(dayOfWeek)
+            ) {
+              repeatedTaskAlreadyExists = true;
+              return true;
+            } else {
+              repeatedTaskAlreadyExists = false;
+              return false;
+            }
+          });
           if (!repeatedTaskAlreadyExists) {
             tasksToday.push({
               id: `repeated-${index}-${repeatedTask.id}-${format(
@@ -274,43 +311,124 @@ const Tasks: FC<TasksProps> = () => {
               dateFormatted: format(date, taskDateFormat),
               isCompleted: false,
               isRepeated: true,
+              isActive: true,
+              order: tasksToday.length,
             });
           }
         }
       );
-      return tasksToday;
+      return tasksToday.sort((current: Task, next: Task) =>
+        current.order < next.order ? -1 : 1
+      );
     },
     [tasks, repeatedTasks, uid]
   );
 
-  const markTaskAsCompleted = async (): Promise<void> => {
-    const completedTask: Task | undefined = tasks.find(
-      (task: Task) => task.id === taskItemMenuId
-    );
-    const taskIndex: number = tasks.findIndex(
-      (task: Task) => task.id === taskItemMenuId
-    );
-    if (completedTask) {
-      completedTask.isCompleted = !completedTask.isCompleted;
-      await createOrUpdateTask(completedTask);
+  const markTaskAsCompleted = async (date: Date): Promise<void> => {
+    if (taskItemMenuId && taskItemMenuId.indexOf("repeated") > -1) {
+      const repeatedTaskSplit: string[] = taskItemMenuId.split("-");
+      const repeatedTaskId: string = repeatedTaskSplit
+        .slice(2, repeatedTaskSplit.length - 3)
+        .join("-");
+      const repeatedTask: RepeatedTask = repeatedTasks.filter(
+        (repeatedTask: RepeatedTask) => repeatedTask.id === repeatedTaskId
+      )[0];
+      const newTask: Task = {
+        id: "",
+        content: repeatedTask.content,
+        uid,
+        isRepeated: true,
+        isCompleted: true,
+        repeatedTaskId,
+        dateFormatted: format(date, taskDateFormat),
+        date: date,
+        isActive: true,
+        order: tasks.filter(
+          (task: Task) => task.dateFormatted === format(date, taskDateFormat)
+        ).length,
+      };
+      const { id } = await createOrUpdateTask(newTask);
       setTasks((previousTasks: Task[]) => {
         return [
-          ...previousTasks.slice(0, taskIndex),
-          completedTask,
-          ...previousTasks.slice(taskIndex + 1),
+          ...previousTasks,
+          {
+            ...newTask,
+            id,
+          },
         ];
       });
       setTaskItemMenuId(null);
+    } else {
+      const completedTask: Task | undefined = tasks.find(
+        (task: Task) => task.id === taskItemMenuId
+      );
+      const taskIndex: number = tasks.findIndex(
+        (task: Task) => task.id === taskItemMenuId
+      );
+      if (completedTask) {
+        completedTask.isCompleted = !completedTask.isCompleted;
+        await createOrUpdateTask(completedTask);
+        setTasks((previousTasks: Task[]) => {
+          return [
+            ...previousTasks.slice(0, taskIndex),
+            completedTask,
+            ...previousTasks.slice(taskIndex + 1),
+          ];
+        });
+        setTaskItemMenuId(null);
+      }
     }
   };
 
-  const removeTask = async (): Promise<void> => {
-    if (taskItemMenuId !== null) {
-      deleteTask(taskItemMenuId);
-      setTasks((previousTasks: Task[]) =>
-        previousTasks.filter((task: Task) => task.id !== taskItemMenuId)
+  const removeTask = async (date: Date): Promise<void> => {
+    if (taskItemMenuId && taskItemMenuId.indexOf("repeated") > -1) {
+      const repeatedTaskSplit: string[] = taskItemMenuId.split("-");
+      const repeatedTaskId: string = repeatedTaskSplit
+        .slice(2, repeatedTaskSplit.length - 3)
+        .join("-");
+      const repeatedTask: RepeatedTask = repeatedTasks.filter(
+        (repeatedTask: RepeatedTask) => repeatedTask.id === repeatedTaskId
+      )[0];
+      const newTask: Task = {
+        id: "",
+        content: repeatedTask.content,
+        uid,
+        isRepeated: true,
+        isCompleted: true,
+        repeatedTaskId,
+        dateFormatted: format(date, taskDateFormat),
+        date: date,
+        isActive: false,
+        order: 0,
+      };
+      const { id } = await createOrUpdateTask(newTask);
+      setTasks((previousTasks: Task[]) => {
+        return [
+          ...previousTasks,
+          {
+            ...newTask,
+            id,
+          },
+        ];
+      });
+    } else {
+      const taskIndex: number = tasks.findIndex(
+        (task: Task) => task.id === taskItemMenuId
       );
+      let updatedTask: Task = tasks.filter(
+        (task: Task) => task.id === taskItemMenuId
+      )[0];
+      updatedTask.isActive = false;
+      await createOrUpdateTask(updatedTask);
+      setTasks((previousTasks: Task[]) => {
+        return [
+          ...previousTasks.slice(0, taskIndex),
+          updatedTask,
+          ...previousTasks.slice(taskIndex + 1),
+        ];
+      });
     }
+    setTaskItemMenuId(null);
   };
 
   const buildTaskItems = (): ReactNode[] => {
@@ -331,9 +449,12 @@ const Tasks: FC<TasksProps> = () => {
             taskItemMenuId={taskItemMenuId}
             setTaskItemMenuId={setTaskItemMenuId}
             setTaskItemEdit={setTaskItemEditId}
-            deleteTask={removeTask}
+            deleteTask={() => removeTask(addDays(selectedDate, i))}
             taskItemEdit={taskItemEdit}
             markTaskAsCompleted={markTaskAsCompleted}
+            onDragEnd={onDragEnd}
+            repeatedTaskIdSync={repeatedTaskIdSync}
+            syncRepeatedTask={syncRepeatedTask}
           />
         );
       }
@@ -353,15 +474,113 @@ const Tasks: FC<TasksProps> = () => {
             taskItemMenuId={taskItemMenuId}
             setTaskItemMenuId={setTaskItemMenuId}
             setTaskItemEdit={setTaskItemEditId}
-            deleteTask={removeTask}
+            deleteTask={() => removeTask(addDays(selectedDate, i))}
             taskItemEdit={taskItemEdit}
             markTaskAsCompleted={markTaskAsCompleted}
+            onDragEnd={onDragEnd}
+            repeatedTaskIdSync={repeatedTaskIdSync}
+            syncRepeatedTask={syncRepeatedTask}
           />
         );
       }
     }
-
     return taskItems;
+  };
+
+  const onDragEnd = async (result: DropResult, date: Date): Promise<void> => {
+    if (!result.destination) {
+      return;
+    }
+    const { draggableId }: { draggableId: string } = result;
+    if (draggableId.indexOf("repeated") > -1) {
+      const repeatedTaskSplit: string[] = draggableId.split("-");
+      const repeatedTaskId: string = repeatedTaskSplit
+        .slice(2, repeatedTaskSplit.length - 3)
+        .join("-");
+      const repeatedTask: RepeatedTask = repeatedTasks.filter(
+        (repeatedTask: RepeatedTask) => repeatedTask.id === repeatedTaskId
+      )[0];
+      let newTask: Task = {
+        id: "",
+        content: repeatedTask.content,
+        uid,
+        isRepeated: true,
+        isCompleted: false,
+        repeatedTaskId,
+        dateFormatted: format(date, taskDateFormat),
+        date: date,
+        isActive: true,
+        order: tasks.filter(
+          (task: Task) => task.dateFormatted === format(date, taskDateFormat)
+        ).length,
+      };
+      const { id } = await createOrUpdateTask(newTask);
+      newTask.id = id;
+      const tasksToReorder: Task[] = [...tasks, { ...newTask }]
+        .filter(
+          (task: Task) => task.dateFormatted === format(date, taskDateFormat)
+        )
+        .sort((current: Task, next: Task) =>
+          current.order < next.order ? -1 : 1
+        );
+      const tasksToNotReorder: Task[] = tasks.filter(
+        (task: Task) => task.dateFormatted !== format(date, taskDateFormat)
+      );
+      const items: Task[] = reorder(
+        tasksToReorder,
+        result.source.index,
+        result.destination.index
+      );
+      setTasks([...items, ...tasksToNotReorder]);
+    } else {
+      const tasksToReorder: Task[] = tasks
+        .filter(
+          (task: Task) => task.dateFormatted === format(date, taskDateFormat)
+        )
+        .sort((current: Task, next: Task) =>
+          current.order < next.order ? -1 : 1
+        );
+      const tasksToNotReorder: Task[] = tasks.filter(
+        (task: Task) => task.dateFormatted !== format(date, taskDateFormat)
+      );
+      const items: Task[] = reorder(
+        tasksToReorder,
+        result.source.index,
+        result.destination.index
+      );
+      setTasks([...items, ...tasksToNotReorder]);
+    }
+  };
+
+  const syncRepeatedTask = async (
+    taskId: string,
+    date: Date
+  ): Promise<void> => {
+    setRepeatedTaskIdSync(taskId);
+    const repeatedTaskSplit: string[] = taskId.split("-");
+    const repeatedTaskId: string = repeatedTaskSplit
+      .slice(2, repeatedTaskSplit.length - 3)
+      .join("-");
+    const repeatedTask: RepeatedTask = repeatedTasks.filter(
+      (repeatedTask: RepeatedTask) => repeatedTask.id === repeatedTaskId
+    )[0];
+    let newTask: Task = {
+      id: "",
+      content: repeatedTask.content,
+      uid,
+      isRepeated: true,
+      isCompleted: false,
+      repeatedTaskId,
+      dateFormatted: format(date, taskDateFormat),
+      date: date,
+      isActive: true,
+      order: tasks.filter(
+        (task: Task) => task.dateFormatted === format(date, taskDateFormat)
+      ).length,
+    };
+    const { id } = await createOrUpdateTask(newTask);
+    setRepeatedTaskIdSync("");
+    setTasks([...tasks, { ...newTask, id }]);
   };
 
   return (

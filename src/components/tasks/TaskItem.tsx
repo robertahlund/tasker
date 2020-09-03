@@ -10,6 +10,16 @@ import TaskHeading from "./TaskHeading";
 import Task from "./Task";
 import AddIcon from "../icons/AddIcon";
 import { Task as TaskType, TaskItemEdit } from "../../types/types";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DroppableProvided,
+  DroppableStateSnapshot,
+  DraggableProvided,
+  DraggableStateSnapshot,
+  DropResult,
+} from "react-beautiful-dnd";
 
 interface TaskItemProps {
   date: Date;
@@ -25,8 +35,16 @@ interface TaskItemProps {
   setTaskItemEdit: Dispatch<SetStateAction<TaskItemEdit>>;
   taskItemEdit: TaskItemEdit;
   deleteTask: () => Promise<void>;
-  markTaskAsCompleted: () => Promise<void>;
+  markTaskAsCompleted: (date: Date) => Promise<void>;
+  onDragEnd: (result: any, date: Date) => Promise<void>;
+  repeatedTaskIdSync: string;
+  syncRepeatedTask: (taskId: string, date: Date) => Promise<void>;
 }
+
+const getItemStyle = (isDragging: any, draggableStyle: any) => ({
+  marginBottom: "7px",
+  ...draggableStyle,
+});
 
 const TaskItem: FC<TaskItemProps> = ({
   date,
@@ -43,6 +61,9 @@ const TaskItem: FC<TaskItemProps> = ({
   deleteTask,
   taskItemEdit,
   markTaskAsCompleted,
+  onDragEnd,
+  repeatedTaskIdSync,
+  syncRepeatedTask,
 }) => {
   return (
     <div className="task-item">
@@ -51,6 +72,7 @@ const TaskItem: FC<TaskItemProps> = ({
       <div className="task-item-container">
         {isCreateNew && (
           <Task
+            isCreateNew={isCreateNew}
             isEdit={isCreateNew}
             onInputChange={onInputChange}
             newTaskContent={newTaskContent}
@@ -66,28 +88,76 @@ const TaskItem: FC<TaskItemProps> = ({
             markTaskAsCompleted={markTaskAsCompleted}
             isRepeated={false}
             date={date}
+            isActive={true}
+            isSyncing={false}
+            syncRepeatedTask={syncRepeatedTask}
           />
         )}
-        {tasks.map((task: TaskType) => (
-          <Task
-            isEdit={taskItemEdit.taskId === task.id}
-            onInputChange={onInputChange}
-            newTaskContent={newTaskContent}
-            taskContent={task.content}
-            onKeyPress={onKeyPress}
-            saveTask={saveTask}
-            key={task.id}
-            setTaskItemMenuId={setTaskItemMenuId}
-            taskItemMenuId={taskItemMenuId}
-            taskId={task.id}
-            setTaskItemEdit={setTaskItemEdit}
-            deleteTask={deleteTask}
-            isCompleted={task.isCompleted}
-            markTaskAsCompleted={markTaskAsCompleted}
-            isRepeated={task.isRepeated}
-            date={date}
-          />
-        ))}
+        <DragDropContext
+          onDragEnd={(result: DropResult) => onDragEnd(result, date)}
+        >
+          <Droppable droppableId="droppable">
+            {(
+              provided: DroppableProvided,
+              snapshot: DroppableStateSnapshot
+            ) => (
+              <div
+                className="task-item-container__inner"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {tasks.map((task: TaskType, index: number) => (
+                  <Draggable
+                    key={task.id}
+                    draggableId={task.id}
+                    index={index}
+                    isDragDisabled={
+                      task.isRepeated && task.id.indexOf("repeated") > -1
+                    }
+                  >
+                    {(
+                      provided: DraggableProvided,
+                      snapshot: DraggableStateSnapshot
+                    ) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+                        <Task
+                          isEdit={taskItemEdit.taskId === task.id}
+                          onInputChange={onInputChange}
+                          newTaskContent={newTaskContent}
+                          taskContent={task.content}
+                          onKeyPress={onKeyPress}
+                          saveTask={saveTask}
+                          key={task.id}
+                          setTaskItemMenuId={setTaskItemMenuId}
+                          taskItemMenuId={taskItemMenuId}
+                          taskId={task.id}
+                          setTaskItemEdit={setTaskItemEdit}
+                          deleteTask={deleteTask}
+                          isCompleted={task.isCompleted}
+                          markTaskAsCompleted={markTaskAsCompleted}
+                          isRepeated={task.isRepeated}
+                          date={date}
+                          isActive={task.isActive}
+                          isSyncing={repeatedTaskIdSync === task.id}
+                          syncRepeatedTask={syncRepeatedTask}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );

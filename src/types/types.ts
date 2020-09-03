@@ -42,6 +42,8 @@ export interface Task {
   repeatedTaskId?: string;
   date: Date;
   dateFormatted: string;
+  isActive: boolean;
+  order: number;
 }
 
 export interface TaskItemEdit {

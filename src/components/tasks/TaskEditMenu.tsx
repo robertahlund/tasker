@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 interface TaskEditMenuProps {
   selectTaskIdForEdit: () => void;
   removeTask: () => Promise<void>;
-  markTaskAsCompleted: () => Promise<void>;
+  markTaskAsCompleted: (date: Date) => Promise<void>;
   isCompleted: boolean;
+  date: Date;
 }
 
 const TaskEditMenu: FC<TaskEditMenuProps> = ({
@@ -14,6 +15,7 @@ const TaskEditMenu: FC<TaskEditMenuProps> = ({
   removeTask,
   markTaskAsCompleted,
   isCompleted,
+  date,
 }) => {
   return (
     <motion.div
@@ -29,7 +31,7 @@ const TaskEditMenu: FC<TaskEditMenuProps> = ({
           Edit task
         </div>
       )}
-      <div className="submenu-item" onClick={markTaskAsCompleted}>
+      <div className="submenu-item" onClick={() => markTaskAsCompleted(date)}>
         {isCompleted ? "Mark as incomplete" : "Mark as completed"}
       </div>
       <div className="submenu-item submenu-item__delete" onClick={removeTask}>

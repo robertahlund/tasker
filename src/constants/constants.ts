@@ -33,6 +33,8 @@ export const defaultTask: Task = {
   date: new Date(),
   dateFormatted: "",
   isRepeated: false,
+  isActive: true,
+  order: 0,
 };
 
 export const defaultTaskItemEdit: TaskItemEdit = {

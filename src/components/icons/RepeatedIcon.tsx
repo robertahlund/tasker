@@ -2,10 +2,19 @@ import React, { FC } from "react";
 import { IconProps } from "../../types/types";
 import "./Icon.css";
 
-const RepeatedIcon: FC<IconProps> = ({ height, width, onClickFunction }) => {
+interface IRepeatedIconProps extends IconProps {
+  isSyncing?: boolean;
+}
+
+const RepeatedIcon: FC<IconProps & IRepeatedIconProps> = ({
+  height,
+  width,
+  onClickFunction,
+  isSyncing,
+}) => {
   return (
     <svg
-      className="icon-path"
+      className={`icon-path ${isSyncing ? " rotate" : ""}`}
       xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}

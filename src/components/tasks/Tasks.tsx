@@ -67,10 +67,10 @@ interface TasksProps {}
 
 const Tasks: FC<TasksProps> = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(
-    startOfMonth(new Date())
+    startOfWeek(new Date(), { weekStartsOn: 1 })
   );
   const [selectedTaskFilter, setSelectedTaskFilter] = useState<TaskFilterEnum>(
-    TaskFilterEnum.Month
+    TaskFilterEnum.Week
   );
   const [createNewIndex, setCreateNewIndex] = useState<number | null>(null);
   const [taskEdit, setTaskEdit] = useState<Task>(defaultTask);
@@ -81,6 +81,9 @@ const Tasks: FC<TasksProps> = () => {
   );
   const [repeatedTasks, setRepeatedTasks] = useState<RepeatedTask[]>([]);
   const [repeatedTaskIdSync, setRepeatedTaskIdSync] = useState<string>("");
+  const [shouldSyncEverything, setShouldSyncEverything] = useState<boolean>(
+    false
+  );
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 

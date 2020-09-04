@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.task-item--active {
+  background-color: #ff545c;
+}
+
 .task-item:nth-child(n + 7) {
   margin-top: 15px;
 }
@@ -18,6 +22,14 @@
 
 .task-item > .icon-path {
   fill: var(--link-font-color);
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.task-item--active > .icon-path {
+  fill: var(--secondary-bg-color);
   cursor: pointer;
   position: absolute;
   top: 15px;

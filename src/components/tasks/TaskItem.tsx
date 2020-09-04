@@ -20,6 +20,7 @@ import {
   DraggableStateSnapshot,
   DropResult,
 } from "react-beautiful-dnd";
+import { isSameDay } from "date-fns";
 
 interface TaskItemProps {
   date: Date;
@@ -66,7 +67,11 @@ const TaskItem: FC<TaskItemProps> = ({
   syncRepeatedTask,
 }) => {
   return (
-    <div className="task-item">
+    <div
+      className={`task-item ${
+        isSameDay(date, new Date()) ? " task-item--active" : ""
+      }`}
+    >
       <TaskHeading date={date} />
       <AddIcon height="18px" width="18px" onClickFunction={setCreateNew} />
       <div className="task-item-container">

@@ -1,4 +1,11 @@
-import React, { ChangeEvent, FC, KeyboardEvent } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  KeyboardEvent,
+  RefObject,
+  createRef,
+  useEffect,
+} from "react";
 import "./InputField.css";
 
 interface InputFieldProps {
@@ -28,6 +35,14 @@ const InputField: FC<InputFieldProps> = ({
   onBlur,
   onKeyPress,
 }) => {
+  const inputRef: RefObject<HTMLInputElement> | null | undefined = createRef();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef]);
+
   return (
     <div className="input-field-wrapper">
       {icon && icon}
@@ -45,6 +60,7 @@ const InputField: FC<InputFieldProps> = ({
         name={name}
         onBlur={onBlur}
         onKeyDown={onKeyPress}
+        ref={inputRef}
       />
     </div>
   );

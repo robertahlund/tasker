@@ -20,6 +20,7 @@ interface InputFieldProps {
   icon?: React.ReactNode;
   onBlur?: () => void;
   onKeyPress?: (event: KeyboardEvent<HTMLInputElement>) => void;
+  shouldAutoFocus?: boolean;
 }
 
 const InputField: FC<InputFieldProps> = ({
@@ -34,14 +35,15 @@ const InputField: FC<InputFieldProps> = ({
   icon,
   onBlur,
   onKeyPress,
+  shouldAutoFocus,
 }) => {
   const inputRef: RefObject<HTMLInputElement> | null | undefined = createRef();
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && shouldAutoFocus) {
       inputRef.current.focus();
     }
-  }, [inputRef]);
+  }, [inputRef, shouldAutoFocus]);
 
   return (
     <div className="input-field-wrapper">

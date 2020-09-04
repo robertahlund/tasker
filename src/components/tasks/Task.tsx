@@ -74,6 +74,7 @@ const Task: FC<TaskProps> = ({
             validationMessage=""
             value={newTaskContent}
             onKeyPress={onKeyPress}
+            shouldAutoFocus={true}
           />
         ) : (
           <>

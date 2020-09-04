@@ -26,12 +26,6 @@ const DesktopMenu: FC<DesktopMenuProps> = () => {
             >
               <MenuItem text="Repeated Tasks" />
             </NavLink>
-            <NavLink to="/statistics" activeClassName="menu-list-item__active">
-              <MenuItem text="Statistics" />
-            </NavLink>
-            <NavLink to="/settings" activeClassName="menu-list-item__active">
-              <MenuItem text="Settings" />
-            </NavLink>
           </>
         )}
         <span

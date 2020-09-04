@@ -37,10 +37,12 @@ import { TaskFilter as TaskFilterEnum } from "../../enums/enums";
 import TaskItem from "./TaskItem";
 import { Task, Auth, RepeatedTask, TaskItemEdit } from "../../types/types";
 import { AuthenticationContext } from "../../context/authContext";
+import Sync from "./Sync";
 import {
   createOrUpdateTask,
   getAllTasksByDateRange,
   updateTaskOrder,
+  syncRepeatedTaskToTask,
 } from "../../api/tasks";
 import { endOfWeek } from "date-fns/esm";
 import { getAllRepeatedTasksByUserId } from "../../api/repeatedTasks";
@@ -84,6 +86,8 @@ const Tasks: FC<TasksProps> = () => {
   const [shouldSyncEverything, setShouldSyncEverything] = useState<boolean>(
     false
   );
+  const [showSyncMenu, setShowSyncMenu] = useState<boolean>(false);
+  const [syncIsLoading, setSyncIsLoading] = useState<boolean>(false);
 
   const { uid }: { uid: string } = useContext<Auth>(AuthenticationContext);
 
@@ -159,7 +163,7 @@ const Tasks: FC<TasksProps> = () => {
         endOfWeek(selectedDate, { weekStartsOn: 1 })
       );
     }
-  }, [selectedDate, getTasks, selectedTaskFilter]);
+  }, [selectedDate, getTasks, selectedTaskFilter, shouldSyncEverything]);
 
   const incrementMonth = (): void => {
     setSelectedDate((previousSelectedDate: Date) =>
@@ -188,7 +192,7 @@ const Tasks: FC<TasksProps> = () => {
   const taskFilterChange = (taskFilter: TaskFilterEnum): void => {
     setSelectedTaskFilter(taskFilter);
     if (taskFilter === TaskFilterEnum.Month) {
-      setSelectedDate(startOfMonth(selectedDate));
+      setSelectedDate(startOfMonth(new Date()));
     } else {
       setSelectedDate(startOfWeek(new Date(), { weekStartsOn: 1 }));
     }
@@ -586,6 +590,30 @@ const Tasks: FC<TasksProps> = () => {
     setTasks([...tasks, { ...newTask, id }]);
   };
 
+  const syncAllRepeatedTasks = async (): Promise<void> => {
+    setSyncIsLoading(true);
+    const allTasks: Task[] = [];
+    if (selectedTaskFilter === TaskFilterEnum.Month) {
+      for (let i = 0; i < getDaysInMonth(selectedDate); i++) {
+        allTasks.push(...getTasksByDate(addDays(selectedDate, i)));
+      }
+    } else {
+      for (let i = 0; i <= 6; i++) {
+        allTasks.push(...getTasksByDate(addDays(selectedDate, i)));
+      }
+    }
+    const repeatedTasksToBeSynced: Task[] = allTasks.filter(
+      (task: Task) => task.id.indexOf("repeated") > -1
+    );
+    await syncRepeatedTaskToTask(repeatedTasksToBeSynced);
+
+    setSyncIsLoading(false);
+    setShouldSyncEverything((previousState: boolean) => !previousState);
+    setTimeout(() => {
+      setShowSyncMenu(false);
+    }, 1000);
+  };
+
   return (
     <main className="main-section tasks">
       <div className="tasks-header">
@@ -617,6 +645,16 @@ const Tasks: FC<TasksProps> = () => {
           />
         </div>
       </div>
+      <Sync
+        showSyncMenu={showSyncMenu}
+        setShowSyncMenu={() =>
+          setShowSyncMenu((previousState: boolean) => {
+            return !previousState;
+          })
+        }
+        syncIsLoading={syncIsLoading}
+        syncAllRepeatedTasks={syncAllRepeatedTasks}
+      />
       <div className="tasks-container">{buildTaskItems()}</div>
     </main>
   );

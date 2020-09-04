@@ -1,0 +1,44 @@
+.sync-container > .syncmenu-wrapper {
+  position: absolute;
+  right: 40px;
+  top: -12px;
+  background-color: var(--seconday-bg-color);
+  border-radius: var(--border-radius);
+  padding: 0 10px;
+  z-index: 2;
+  text-align: center;
+  color: var(--primary-font-color);
+  border: 1px solid var(--bg-color);
+  font-weight: var(--medium-font);
+  font-size: var(--primary-font-size);
+}
+
+.sync-container > .syncmenu-wrapper:after {
+  content: "";
+  background-color: var(--seconday-bg-color);
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  position: absolute;
+  right: -6px;
+  top: 15px;
+  transform: rotate(45deg);
+  z-index: -1;
+  border-right: 1px solid var(--bg-color);
+  border-top: 1px solid var(--bg-color);
+}
+
+.syncmenu-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  z-index: 1;
+  color: var(--secondary-font-color);
+  display: flex;
+  align-items: center;
+}
+
+.syncmenu-item > .icon-path {
+  fill: var(--secondary-color);
+  height: 16px;
+  margin-right: 10px;
+}

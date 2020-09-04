@@ -1,0 +1,11 @@
+.sync-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+  position: relative;
+}
+
+.sync-container > .icon-path {
+  fill: var(--secondary-color);
+  cursor: pointer;
+}

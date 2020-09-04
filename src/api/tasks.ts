@@ -119,3 +119,18 @@ export const updateTaskOrder = async (tasks: Task[]): Promise<void> => {
     console.log(error);
   }
 };
+
+export const syncRepeatedTaskToTask = async (tasks: Task[]): Promise<void> => {
+  const db = firebase.firestore();
+  const batch = db.batch();
+  try {
+    tasks.forEach((task: Task) => {
+      task.id = generateGuid();
+      const taskRef = db.collection(tasksPath).doc(task.id);
+      batch.set(taskRef, task);
+    });
+    await batch.commit();
+  } catch (error) {
+    console.log(error);
+  }
+};
